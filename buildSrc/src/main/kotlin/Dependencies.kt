@@ -14,6 +14,8 @@ object Dependencies {
         const val dependencyVersionsPlugin = "0.51.0"
         const val nexusSonatype = "2.0.0-rc-1"
         const val dokka = "1.9.10"
+        const val composeMultiplatform = "1.6.0"
+        const val composeCompilerExtension = "1.5.9"
         const val annotations = "1.7.1"
         const val coroutines = "1.7.3"
         const val napier = "2.6.1"
@@ -46,6 +48,7 @@ object Dependencies {
         }
 
         object Tweener {
+            const val czan = "2.1.0"
             const val bom = "1.0.0"
         }
 
@@ -64,6 +67,8 @@ object Dependencies {
         const val annotations = "androidx.annotation:annotation:${Versions.annotations}"
 
         object Tweener {
+            const val czan = "io.github.tweener:czan:${Versions.Tweener.czan}"
+
             const val bom = "io.github.tweener:kmp-bom:${Versions.Tweener.bom}"
             const val common = "io.github.tweener:kmp-common"
         }
@@ -74,6 +79,10 @@ object Dependencies {
             object Android {
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
             }
+        }
+
+        object ComposeMultiplatform {
+            const val material3 = "org.jetbrains.compose.material3:material3:${Versions.composeMultiplatform}"
         }
 
         object Android {

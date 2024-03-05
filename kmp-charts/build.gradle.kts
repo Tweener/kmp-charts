@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("org.jetbrains.compose")
     id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
@@ -29,6 +30,14 @@ android {
 
         getByName("debug") {
         }
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Dependencies.Versions.composeCompilerExtension
     }
 
     compileOptions {
@@ -74,11 +83,22 @@ kotlin {
             implementation(Dependencies.Libraries.annotations)
 
             // Tweener
+            implementation(Dependencies.Libraries.Tweener.czan)
+
             implementation(project.dependencies.platform(Dependencies.Libraries.Tweener.bom))
             implementation(Dependencies.Libraries.Tweener.common)
 
             // Coroutines
             implementation(Dependencies.Libraries.Coroutines.core)
+
+            // Compose
+            implementation(compose.ui)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.materialIconsExtended)
+            implementation(compose.runtime)
+            implementation(compose.components.resources)
+            implementation(Dependencies.Libraries.ComposeMultiplatform.material3)
         }
 
         androidMain.dependencies {
