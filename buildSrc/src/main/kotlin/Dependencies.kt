@@ -49,7 +49,7 @@ object Dependencies {
 
         object Tweener {
             const val czan = "2.1.1"
-            const val bom = "1.0.0"
+            const val bom = "1.0.1"
         }
 
         object Android {
