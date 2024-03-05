@@ -18,21 +18,19 @@ object Dependencies {
         const val coroutines = "1.7.3"
         const val napier = "2.6.1"
 
-        // TODO Rename MyProject to your project name
-        object MyProject {
-            const val packageName = "com.tweener.changehere" // TODO Change this
+        object Charts {
+            const val packageName = "com.tweener.charts"
             const val versionName = "1.0.0"
             const val namespace = "$packageName.android"
             const val compileSDK = 34
             const val minSDK = 24
 
-            // TODO Change all the values in this block to your needs
             object Maven {
-                const val name = "MyKMPLibrary"
-                const val description = "All Tweener commons stuff for Kotlin Multiplatform"
+                const val name = "KMPCharts"
+                const val description = "A Kotlin/Compose Multiplatform library to display various types of charts"
                 const val group = "io.github.tweener"
-                const val packageUrl = "https://github.com/Tweener/kmp-common"
-                const val gitUrl = "github.com:Tweener/kmp-common.git"
+                const val packageUrl = "https://github.com/Tweener/kmp-charts"
+                const val gitUrl = "github.com:Tweener/kmp-charts.git"
 
                 object Developer {
                     const val id = "Tweener"
