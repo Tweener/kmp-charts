@@ -27,7 +27,7 @@ object Dependencies {
 
             object Maven {
                 const val name = "KMPCharts"
-                const val description = "A Kotlin/Compose Multiplatform library to display various types of charts"
+                const val description = "A Kotlin/Compose Multiplatform library that offers many different types of charts"
                 const val group = "io.github.tweener"
                 const val packageUrl = "https://github.com/Tweener/kmp-charts"
                 const val gitUrl = "github.com:Tweener/kmp-charts.git"
