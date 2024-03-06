@@ -86,7 +86,7 @@ kotlin {
             implementation(Dependencies.Libraries.Tweener.czan)
 
             implementation(project.dependencies.platform(Dependencies.Libraries.Tweener.bom))
-            implementation(Dependencies.Libraries.Tweener.common)
+            api(Dependencies.Libraries.Tweener.common)
 
             // Coroutines
             implementation(Dependencies.Libraries.Coroutines.core)

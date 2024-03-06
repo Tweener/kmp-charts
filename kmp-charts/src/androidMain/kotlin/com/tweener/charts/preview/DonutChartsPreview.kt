@@ -1,8 +1,11 @@
-package com.tweener.charts
+package com.tweener.charts.preview
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.tweener.charts.DonutChart
+import com.tweener.charts.DonutChartDefault
+import com.tweener.charts.Segment
 import com.tweener.common._internal.kotlinextensions.degrees
 import com.tweener.czan.preview.UiModePreviews
 

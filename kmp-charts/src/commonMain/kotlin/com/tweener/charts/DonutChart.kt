@@ -32,7 +32,6 @@ import com.tweener.common._internal.kotlinextensions.degrees
 import com.tweener.common._internal.kotlinextensions.radians
 import com.tweener.common._internal.utils.Degrees
 import com.tweener.czan.theme.Size
-import io.github.aakira.napier.Napier
 import kotlin.math.atan2
 import kotlin.math.min
 
@@ -49,7 +48,6 @@ data class Segment(
 )
 
 const val NO_SELECTED_SEGMENT = -1
-
 
 /**
  * Draws a donut chart with the provided list of [Segment]s, with the first segment starting from the given [startAngleFromOrigin] in degrees.
@@ -113,8 +111,6 @@ fun DonutChart(
                                 pointerY = offset.y,
                                 referenceAngle = startAngleFromOrigin,
                             )
-
-                            Napier.d { "Clicked in canvas: ${offset.x} / ${offset.y} -> angle: $clickedAngle" }
 
                             segmentsEndAngles.forEachIndexed { index, angle ->
                                 if (clickedAngle <= angle) {
