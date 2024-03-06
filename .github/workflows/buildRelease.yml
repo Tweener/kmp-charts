@@ -1,4 +1,4 @@
-name: Kmplate-lib build
+name: Build [kmp-charts]
 
 on:
   workflow_call:
