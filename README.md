@@ -15,10 +15,10 @@ _The latest version is: [![](https://img.shields.io/maven-metadata/v?metadataUrl
 ## ⚙️ Usage
 
 > [!NOTE]
-> For now, there is only one chart available: [`DonutChart`](https://github.com/Tweener/kmp-charts/blob/main/kmp-charts/src/commonMain/kotlin/com/tweener/charts/DonutChart.kt#L63). More charts will be added later on.
+> For now, there is only one chart available: [`DonutChart`](https://github.com/Tweener/kmp-charts/blob/main/kmp-charts/src/commonMain/kotlin/com/tweener/charts/DonutChart.kt#L61). More charts will be added later on.
 
 #### 🍩 Donut chart
-A [`DonutChart`](https://github.com/Tweener/kmp-charts/blob/main/kmp-charts/src/commonMain/kotlin/com/tweener/charts/DonutChart.kt#L63) requires a list of [Segment](https://github.com/Tweener/kmp-charts/blob/main/kmp-charts/src/commonMain/kotlin/com/tweener/charts/DonutChart.kt#L44)s, with the first segment starting from the given `startAngleFromOrigin` in degrees.
+A [`DonutChart`](https://github.com/Tweener/kmp-charts/blob/main/kmp-charts/src/commonMain/kotlin/com/tweener/charts/DonutChart.kt#L61) requires a list of [Segment](https://github.com/Tweener/kmp-charts/blob/main/kmp-charts/src/commonMain/kotlin/com/tweener/charts/DonutChart.kt#L43)s, with the first segment starting from the given `startAngleFromOrigin` in degrees.
 Each segment is defined by an **angle**, its **color** and an optional **progress** option.
 
 _See [`.degrees`](https://github.com/Tweener/kmp-bom/blob/main/kmp-common/src/commonMain/kotlin/com/tweener/common/_internal/kotlinextensions/FloatExtension.kt#L14) to easily use float angles in degrees._ 
@@ -52,7 +52,7 @@ This code gives the following output:
 
 ## 👨‍💻 Contributing
 
-I'd your input and welcome any contributions! Please feel free to submit a pull request.
+I'd love your input and welcome any contributions! Please feel free to submit a pull request.
 
 ## 🪪 Licence
 
