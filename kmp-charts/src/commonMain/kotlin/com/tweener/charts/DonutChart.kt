@@ -41,10 +41,12 @@ import kotlin.math.min
  */
 
 data class Segment(
+    val id: String,
     val angle: Degrees,
-    val baseColor: Color,
     @FloatRange(from = 0.0, to = 1.0) val progress: Float = 1f,
+    val baseColor: Color,
     val backgroundColor: Color = baseColor.copy(alpha = 0.1f),
+    val enabled: Boolean = true,
 )
 
 const val NO_SELECTED_SEGMENT = -1
@@ -65,6 +67,7 @@ fun DonutChart(
     sizes: DonutChartSizes = DonutChartDefault.chartSizes(),
     animated: Boolean = true,
     animationDurationMillis: Int = 300,
+    onSegmentClicked: ((Segment) -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val initialSegmentDrawingAnimRatio = if (LocalInspectionMode.current) 1f else 0f // Don't animate when in Preview mode
@@ -114,7 +117,17 @@ fun DonutChart(
 
                             segmentsEndAngles.forEachIndexed { index, angle ->
                                 if (clickedAngle <= angle) {
-                                    clickedSegmentIndex = index
+                                    // Only detect click if the segment is enabled
+                                    if (segments[index].enabled) {
+                                        onSegmentClicked?.invoke(segments[index])
+
+                                        // Disable the current segment if the user clicked on the same one
+                                        clickedSegmentIndex = when {
+                                            clickedSegmentIndex == index -> NO_SELECTED_SEGMENT
+                                            else -> index
+                                        }
+                                    }
+
                                     return@detectTapGestures
                                 }
                             }
