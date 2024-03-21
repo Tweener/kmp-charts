@@ -36,8 +36,8 @@ private fun DonutChartPreview() {
         startAngleFromOrigin = 270f.degrees,
         sizes = DonutChartDefault.chartSizes(strokeWidth = 12.dp, selectedStrokeWidth = 22.dp),
         animationDurationMillis = 800,
-        onSegmentClicked = {
-            Napier.d { "Segment clicked: ${it.id}" }
+        onSegmentClicked = { segment, active ->
+            Napier.d { "Segment clicked: ${segment.id}, isActive? $active" }
         }
     )
 }

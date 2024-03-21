@@ -51,6 +51,8 @@ data class Segment(
 
 const val NO_SELECTED_SEGMENT = -1
 
+typealias Active = Boolean
+
 /**
  * Draws a donut chart with the provided list of [Segment]s, with the first segment starting from the given [startAngleFromOrigin] in degrees.
  *
@@ -67,7 +69,7 @@ fun DonutChart(
     sizes: DonutChartSizes = DonutChartDefault.chartSizes(),
     animated: Boolean = true,
     animationDurationMillis: Int = 300,
-    onSegmentClicked: ((Segment) -> Unit)? = null,
+    onSegmentClicked: ((Segment, Active) -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val initialSegmentDrawingAnimRatio = if (LocalInspectionMode.current) 1f else 0f // Don't animate when in Preview mode
@@ -78,6 +80,9 @@ fun DonutChart(
     var clickedSegmentIndex by remember { mutableIntStateOf(NO_SELECTED_SEGMENT) } // Clicked segment in chart
 
     LaunchedEffect(segments) {
+        // No segment selected when drawing them
+        clickedSegmentIndex = NO_SELECTED_SEGMENT
+
         // Compute each segment's starting and ending angles on the circle
         segmentsStartAngles.clear()
         segmentsEndAngles.clear()
@@ -119,13 +124,13 @@ fun DonutChart(
                                 if (clickedAngle <= angle) {
                                     // Only detect click if the segment is enabled
                                     if (segments[index].enabled) {
-                                        onSegmentClicked?.invoke(segments[index])
-
                                         // Disable the current segment if the user clicked on the same one
                                         clickedSegmentIndex = when {
                                             clickedSegmentIndex == index -> NO_SELECTED_SEGMENT
                                             else -> index
                                         }
+
+                                        onSegmentClicked?.invoke(segments[index], clickedSegmentIndex != NO_SELECTED_SEGMENT)
                                     }
 
                                     return@detectTapGestures
