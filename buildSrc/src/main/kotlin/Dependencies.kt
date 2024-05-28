@@ -9,20 +9,19 @@ object Dependencies {
 
     object Versions {
 
-        const val kotlin = "1.9.21"
-        const val gradle = "8.1.4"
+        const val kotlin = "2.0.0"
+        const val gradle = "8.2.2"
         const val dependencyVersionsPlugin = "0.51.0"
         const val nexusSonatype = "2.0.0-rc-1"
         const val dokka = "1.9.10"
-        const val composeMultiplatform = "1.6.0"
-        const val composeCompilerExtension = "1.5.9"
+        const val composeMultiplatform = "1.6.10"
         const val annotations = "1.7.1"
         const val coroutines = "1.7.3"
         const val napier = "2.6.1"
 
         object Charts {
             const val packageName = "com.tweener.charts"
-            const val versionName = "1.0.1"
+            const val versionName = "1.1.0"
             const val namespace = "$packageName.android"
             const val compileSDK = 34
             const val minSDK = 24
@@ -48,8 +47,8 @@ object Dependencies {
         }
 
         object Tweener {
-            const val czan = "2.1.1"
-            const val bom = "1.0.1"
+            const val czan = "2.3.0"
+            const val bom = "2.0.0"
         }
 
         object Android {
