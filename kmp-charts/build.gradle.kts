@@ -2,25 +2,25 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.compose")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("org.jetbrains.dokka")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.jetbrains.compose.compiler)
+    alias(libs.plugins.dokka)
     id("maven-publish")
     id("signing")
 }
 
 android {
-    namespace = Dependencies.Versions.Charts.namespace
-    compileSdk = Dependencies.Versions.Charts.compileSDK
+    namespace = ProjectConfiguration.Charts.namespace
+    compileSdk = ProjectConfiguration.Charts.compileSDK
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
-        minSdk = Dependencies.Versions.Charts.minSDK
+        minSdk = ProjectConfiguration.Charts.minSDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -41,14 +41,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = Dependencies.Versions.Compiler.javaCompatibility
-        targetCompatibility = Dependencies.Versions.Compiler.javaCompatibility
+        sourceCompatibility = ProjectConfiguration.Compiler.javaCompatibility
+        targetCompatibility = ProjectConfiguration.Compiler.javaCompatibility
 
         isCoreLibraryDesugaringEnabled = true
     }
 
     dependencies {
-        coreLibraryDesugaring(Dependencies.Libraries.Android.desugarJdkLibs)
+        coreLibraryDesugaring(libs.android.desugarjdklibs)
     }
 }
 
@@ -60,7 +60,7 @@ kotlin {
 
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(Dependencies.Versions.Compiler.jvmTarget))
+            jvmTarget.set(JvmTarget.fromTarget(ProjectConfiguration.Compiler.jvmTarget))
         }
     }
 
@@ -78,17 +78,17 @@ kotlin {
     sourceSets {
 
         commonMain.dependencies {
-            implementation(Dependencies.Libraries.napier)
-            implementation(Dependencies.Libraries.annotations)
+            implementation(libs.napier)
+            implementation(libs.android.annotations)
 
             // Tweener
-            implementation(Dependencies.Libraries.Tweener.czan)
+            implementation(libs.tweener.czan)
 
-            implementation(project.dependencies.platform(Dependencies.Libraries.Tweener.bom))
-            api(Dependencies.Libraries.Tweener.common)
+            implementation(project.dependencies.platform(libs.tweener.bom))
+            implementation(libs.tweener.common)
 
             // Coroutines
-            implementation(Dependencies.Libraries.Coroutines.core)
+            implementation(libs.kotlin.coroutines.core)
 
             // Compose
             implementation(compose.ui)
@@ -97,15 +97,15 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(compose.runtime)
             implementation(compose.components.resources)
-            implementation(Dependencies.Libraries.ComposeMultiplatform.material3)
+            implementation(libs.compose.multiplatform.material3)
         }
 
         androidMain.dependencies {
             // Coroutines
-            implementation(Dependencies.Libraries.Coroutines.Android.android)
+            implementation(libs.kotlin.coroutines.android)
 
             // Android
-            implementation(Dependencies.Libraries.Android.AndroidX.core)
+            implementation(libs.android.core)
         }
 
         iosMain.dependencies {
@@ -117,7 +117,7 @@ kotlin {
 // region Publishing
 
 // Dokka configuration
-val dokkaOutputDir = buildDir.resolve("dokka")
+val dokkaOutputDir = rootProject.layout.buildDirectory.asFile.get().resolve("dokka")
 tasks.dokkaHtml { outputDirectory.set(file(dokkaOutputDir)) }
 val deleteDokkaOutputDir by tasks.register<Delete>("deleteDokkaOutputDirectory") { delete(dokkaOutputDir) }
 val javadocJar = tasks.create<Jar>("javadocJar") {
@@ -127,8 +127,8 @@ val javadocJar = tasks.create<Jar>("javadocJar") {
     from(dokkaOutputDir)
 }
 
-group = Dependencies.Versions.Charts.Maven.group
-version = Dependencies.Versions.Charts.versionName
+group = ProjectConfiguration.Charts.Maven.group
+version = ProjectConfiguration.Charts.versionName
 
 publishing {
     publications {
@@ -136,9 +136,9 @@ publishing {
             artifact(javadocJar)
 
             pom {
-                name.set(Dependencies.Versions.Charts.Maven.name)
-                description.set(Dependencies.Versions.Charts.Maven.description)
-                url.set(Dependencies.Versions.Charts.Maven.packageUrl)
+                name.set(ProjectConfiguration.Charts.Maven.name)
+                description.set(ProjectConfiguration.Charts.Maven.description)
+                url.set(ProjectConfiguration.Charts.Maven.packageUrl)
 
                 licenses {
                     license {
@@ -149,21 +149,21 @@ publishing {
 
                 issueManagement {
                     system.set("GitHub Issues")
-                    url.set("${Dependencies.Versions.Charts.Maven.packageUrl}/issues")
+                    url.set("${ProjectConfiguration.Charts.Maven.packageUrl}/issues")
                 }
 
                 developers {
                     developer {
-                        id.set(Dependencies.Versions.Charts.Maven.Developer.id)
-                        name.set(Dependencies.Versions.Charts.Maven.Developer.name)
-                        email.set(Dependencies.Versions.Charts.Maven.Developer.email)
+                        id.set(ProjectConfiguration.Charts.Maven.Developer.id)
+                        name.set(ProjectConfiguration.Charts.Maven.Developer.name)
+                        email.set(ProjectConfiguration.Charts.Maven.Developer.email)
                     }
                 }
 
                 scm {
-                    connection.set("scm:git:git://${Dependencies.Versions.Charts.Maven.gitUrl}")
-                    developerConnection.set("scm:git:ssh://${Dependencies.Versions.Charts.Maven.gitUrl}")
-                    url.set(Dependencies.Versions.Charts.Maven.packageUrl)
+                    connection.set("scm:git:git://${ProjectConfiguration.Charts.Maven.gitUrl}")
+                    developerConnection.set("scm:git:ssh://${ProjectConfiguration.Charts.Maven.gitUrl}")
+                    url.set(ProjectConfiguration.Charts.Maven.packageUrl)
                 }
             }
         }

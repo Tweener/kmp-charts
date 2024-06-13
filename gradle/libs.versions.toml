@@ -1,0 +1,45 @@
+[versions]
+kotlin = "2.0.0"
+gradle = "8.2.2"
+composeMultiplatform = "1.6.11"
+dependencyVersionsPlugin = "0.51.0"
+nexusSonatype = "2.0.0"
+dokka = "1.9.20"
+androidAnnotations = "1.8.0"
+coroutines = "1.8.1"
+napier = "2.7.1"
+
+# Tweener
+tweenerCzan = "2.3.1"
+tweenerBom = "2.0.1"
+
+# Android
+androidDesugarJdkLibs = "2.0.4"
+androidCore = "1.13.1"
+
+[libraries]
+napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
+compose-multiplatform-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "composeMultiplatform" }
+
+# Tweener
+tweener-czan = { group = "io.github.tweener", name = "czan", version.ref = "tweenerCzan" }
+tweener-bom = { group = "io.github.tweener", name = "kmp-bom", version.ref = "tweenerBom" }
+tweener-common = { group = "io.github.tweener", name = "kmp-common" }
+
+# Coroutines
+kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlin-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# Android
+android-desugarjdklibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+android-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidCore" }
+android-annotations = { group = "androidx.annotation", name = "annotation", version.ref = "androidAnnotations" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "gradle" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+jetbrains-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dependency-versions = { id = "com.github.ben-manes.versions", version.ref = "dependencyVersionsPlugin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+nexus-sonatype = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusSonatype" }
