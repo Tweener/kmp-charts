@@ -2,6 +2,7 @@ package com.tweener.charts.preview
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import com.tweener.charts.DonutChart
 import com.tweener.charts.DonutChartDefault
@@ -36,6 +37,7 @@ private fun DonutChartPreview() {
         startAngleFromOrigin = 270f.degrees,
         sizes = DonutChartDefault.chartSizes(strokeWidth = 12.dp, selectedStrokeWidth = 22.dp),
         animationDurationMillis = 800,
+        strokeCap = StrokeCap.Round,
         onSegmentClicked = { segment, active ->
             Napier.d { "Segment clicked: ${segment.id}, isActive? $active" }
         }

@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.Stroke.Companion.DefaultCap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -69,6 +70,7 @@ fun DonutChart(
     sizes: DonutChartSizes = DonutChartDefault.chartSizes(),
     animated: Boolean = true,
     animationDurationMillis: Int = 300,
+    strokeCap: StrokeCap = DefaultCap,
     onSegmentClicked: ((Segment, Active) -> Unit)? = null,
 ) {
     val density = LocalDensity.current
@@ -146,6 +148,7 @@ fun DonutChart(
                         startAngle = segmentsStartAngles[index] + startAngleFromOrigin,
                         sweepAngle = (segment.angle - sizes.angleBetweenSegments()) * segmentDrawingAnimRatio.value,
                         strokeWidth = if (isSelected) sizes.selectedStrokeWidth() else sizes.strokeWidth(),
+                        strokeCap = strokeCap,
                         progress = segment.progress,
                         baseColor = segment.baseColor,
                         backgroundColor = segment.backgroundColor,
@@ -164,6 +167,7 @@ private fun DrawScope.drawSegment(
     sweepAngle: Degrees,
     @FloatRange(from = 0.0, to = 1.0) progress: Float = 1f,
     strokeWidth: Dp,
+    strokeCap: StrokeCap,
     baseColor: Color,
     backgroundColor: Color,
 ) {
@@ -173,7 +177,7 @@ private fun DrawScope.drawSegment(
         startAngle = startAngle.value.toFloat(),
         sweepAngle = sweepAngle.value.toFloat(),
         useCenter = false,
-        style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round),
+        style = Stroke(width = strokeWidth.toPx(), cap = strokeCap),
     )
 
     // Foreground arc
@@ -182,7 +186,7 @@ private fun DrawScope.drawSegment(
         startAngle = startAngle.value.toFloat(),
         sweepAngle = (sweepAngle * progress).value.toFloat(),
         useCenter = false,
-        style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round),
+        style = Stroke(width = strokeWidth.toPx(), cap = strokeCap),
     )
 }
 
