@@ -1,6 +1,10 @@
 package com.tweener.charts.type.line
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +21,7 @@ import com.tweener.charts.type.line.model.PointCoordinates
 import com.tweener.charts.type.line.model.PointX
 import com.tweener.charts.type.line.model.PointY
 import com.tweener.czan.preview.UiModePreviews
+import com.tweener.czan.theme.Size
 
 /**
  * @author Vivien Mahe
@@ -40,7 +45,7 @@ private fun LineChartPreview() {
     )
 
     LineChart(
-        modifier = Modifier.wrapContentSize(),
+        modifier = Modifier.fillMaxWidth().height(200.dp),
         lines = listOf(line1),
         xAxis = XAxis(
             values = listOf(
@@ -62,6 +67,7 @@ private fun LineChartPreview() {
             ),
             strokeStyle = StrokeStyle.Solid,
         ),
+        textStyle = MaterialTheme.typography.labelLarge,
         gridVisibility = LineChartDefaults.gridVisibility(
             showXAxis = true,
             showYAxis = true,
@@ -70,6 +76,7 @@ private fun LineChartPreview() {
             axisStrokeWidth = 2.dp,
             axisDashOn = 8.dp,
             axisDashOff = 8.dp,
+            axisValuesPadding = Size.Padding.Small,
         )
     )
 }
