@@ -6,7 +6,9 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.unit.Dp
 import com.tweener.charts.model.ChartSizes
+import com.tweener.charts.model.StrokeStyle
 import com.tweener.charts.model.XAxis
 import com.tweener.charts.model.XAxisValue
 import com.tweener.charts.model.YAxis
@@ -17,7 +19,7 @@ import com.tweener.charts.model.YAxisValue
  * @since 24/09/2024
  */
 
-internal fun <X, Y> DrawScope.drawAxis(
+internal fun <X, Y> DrawScope.drawAxes(
     textMeasurer: TextMeasurer,
     xAxis: XAxis<X>,
     yAxis: YAxis<Y>,
@@ -44,15 +46,14 @@ internal fun <X> DrawScope.drawXAxis(
     startXOffset: Float,
     sizes: ChartSizes,
 ) {
-    drawLine(
+    drawAxisLine(
         color = Color.Green,
         start = Offset(startXOffset, yOffset),
         end = Offset(size.width, yOffset),
-        strokeWidth = sizes.axisStrokeWidth().toPx(),
-        pathEffect = PathEffect.dashPathEffect(
-            intervals = floatArrayOf(sizes.axisDashOn().toPx(), sizes.axisDashOff().toPx()),
-            phase = 0f,
-        )
+        strokeWidth = sizes.axisStrokeWidth(),
+        strokeStyle = xAxis.strokeStyle,
+        dashOn = sizes.axisDashOn(),
+        dashOff = sizes.axisDashOff(),
     )
 }
 
@@ -62,15 +63,39 @@ internal fun <Y> DrawScope.drawYAxis(
     endYOffset: Float,
     sizes: ChartSizes,
 ) {
-    drawLine(
+    drawAxisLine(
         color = Color.Red,
-        start = Offset(xOffset, 0f),
-        end = Offset(xOffset, endYOffset),
-        strokeWidth = sizes.axisStrokeWidth().toPx(),
-        pathEffect = PathEffect.dashPathEffect(
-            intervals = floatArrayOf(sizes.axisDashOn().toPx(), sizes.axisDashOff().toPx()),
+        start = Offset(xOffset, endYOffset),
+        end = Offset(xOffset, 0f),
+        strokeWidth = sizes.axisStrokeWidth(),
+        strokeStyle = yAxis.strokeStyle,
+        dashOn = sizes.axisDashOn(),
+        dashOff = sizes.axisDashOff(),
+    )
+}
+
+private fun DrawScope.drawAxisLine(
+    color: Color,
+    start: Offset,
+    end: Offset,
+    strokeWidth: Dp,
+    strokeStyle: StrokeStyle,
+    dashOn: Dp,
+    dashOff: Dp,
+) {
+    val pathEffect = if (strokeStyle == StrokeStyle.Dashed) {
+        PathEffect.dashPathEffect(
+            intervals = floatArrayOf(dashOn.toPx(), dashOff.toPx()),
             phase = 0f,
         )
+    } else null
+
+    drawLine(
+        color = color,
+        start = start,
+        end = end,
+        strokeWidth = strokeWidth.toPx(),
+        pathEffect = pathEffect,
     )
 }
 

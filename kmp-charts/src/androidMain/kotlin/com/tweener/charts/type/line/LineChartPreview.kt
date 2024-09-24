@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.tweener.charts.model.StrokeStyle
 import com.tweener.charts.model.XAxis
 import com.tweener.charts.model.XAxisValue
 import com.tweener.charts.model.YAxis
@@ -48,7 +50,7 @@ private fun LineChartPreview() {
                 XAxisValue(x = PointX(2023), name = "2023"),
                 XAxisValue(x = PointX(2024), name = "2024"),
             ),
-            lineType = LineType.Straight,
+            strokeStyle = StrokeStyle.Dashed,
         ),
         yAxis = YAxis(
             values = listOf(
@@ -58,11 +60,16 @@ private fun LineChartPreview() {
                 YAxisValue(y = PointY(30000.0), name = "30 000 €"),
                 YAxisValue(y = PointY(40000.0), name = "40 000 €"),
             ),
-            lineType = LineType.Straight,
+            strokeStyle = StrokeStyle.Solid,
         ),
         gridVisibility = LineChartDefaults.gridVisibility(
             showXAxis = true,
             showYAxis = true,
         ),
+        sizes = LineChartDefaults.chartSizes(
+            axisStrokeWidth = 2.dp,
+            axisDashOn = 8.dp,
+            axisDashOff = 8.dp,
+        )
     )
 }

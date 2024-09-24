@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.tweener.charts.drawAxis
+import com.tweener.charts.drawAxes
 import com.tweener.charts.model.ChartSizes
 import com.tweener.charts.model.XAxis
 import com.tweener.charts.model.YAxis
@@ -28,7 +28,7 @@ fun <X, Y> LineChart(
     Canvas(
         modifier = modifier.fillMaxSize(),
     ) {
-        drawAxis(
+        drawAxes(
             textMeasurer = textMeasurer,
             xAxis = xAxis,
             yAxis = yAxis,

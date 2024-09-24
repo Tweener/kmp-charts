@@ -1,7 +1,6 @@
 package com.tweener.charts.model
 
-import com.tweener.charts.type.line.model.LineType
-import com.tweener.charts.type.line.model.LineType.Companion.DefaultType
+import com.tweener.charts.model.StrokeStyle.Companion.DefaultStyle
 
 /**
  * @author Vivien Mahe
@@ -9,5 +8,5 @@ import com.tweener.charts.type.line.model.LineType.Companion.DefaultType
  */
 data class YAxis<Y>(
     val values: List<YAxisValue<Y>>,
-    val lineType: LineType = DefaultType,
+    val strokeStyle: StrokeStyle = DefaultStyle,
 )
