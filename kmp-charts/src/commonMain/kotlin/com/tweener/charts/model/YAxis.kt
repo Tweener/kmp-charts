@@ -8,5 +8,6 @@ import com.tweener.charts.model.StrokeStyle.Companion.DefaultStyle
  */
 data class YAxis<Y>(
     val values: List<YAxisValue<Y>>,
-    val strokeStyle: StrokeStyle = DefaultStyle,
+    val axisStrokeStyle: StrokeStyle = DefaultStyle,
+    val gridStrokeStyle: StrokeStyle = DefaultStyle,
 )

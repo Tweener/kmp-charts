@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import com.tweener.charts.model.ChartColors
 import com.tweener.charts.model.ChartSizes
+import com.tweener.charts.model.GridVisibility
 import com.tweener.charts.model.StrokeStyle
 import com.tweener.charts.model.XAxis
 import com.tweener.charts.model.XAxisValue
@@ -30,19 +31,34 @@ internal fun <X, Y> DrawScope.drawAxes(
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
-    showXAxis: Boolean = true,
-    showYAxis: Boolean = true,
+    gridVisibility: GridVisibility,
 ) {
-    val xAxisValueHeight = computeXValueHeight(textMeasurer, textStyle = textStyle, xAxis.values)
-    val yAxisXOffset = computeYValueMaxWidth(textMeasurer, textStyle = textStyle, yAxis.values) + sizes.axisValuesPadding().toPx()
-    val yAxisEndYOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
+    if (xAxis.values.size > 1 && yAxis.values.size > 1) {
+        val xAxisValueHeight = computeXValueHeight(textMeasurer, textStyle = textStyle, xAxis.values)
+        val yAxisXOffset = computeYValueMaxWidth(textMeasurer, textStyle = textStyle, yAxis.values) + sizes.axisValuesPadding().toPx()
+        val yAxisEndYOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
 
-    if (showXAxis) {
-        drawXAxis(textMeasurer = textMeasurer, xAxis = xAxis, yOffset = yAxisEndYOffset, startXOffset = yAxisXOffset, textStyle = textStyle, colors = colors, sizes = sizes)
-    }
+        drawXAxis(
+            textMeasurer = textMeasurer,
+            xAxis = xAxis,
+            yOffset = yAxisEndYOffset,
+            startXOffset = yAxisXOffset,
+            textStyle = textStyle,
+            colors = colors,
+            sizes = sizes,
+            gridVisibility = gridVisibility,
+        )
 
-    if (showYAxis) {
-        drawYAxis(textMeasurer = textMeasurer, yAxis = yAxis, xOffset = yAxisXOffset, endYOffset = yAxisEndYOffset, textStyle = textStyle, colors = colors, sizes = sizes)
+        drawYAxis(
+            textMeasurer = textMeasurer,
+            yAxis = yAxis,
+            xOffset = yAxisXOffset,
+            endYOffset = yAxisEndYOffset,
+            textStyle = textStyle,
+            colors = colors,
+            sizes = sizes,
+            gridVisibility = gridVisibility,
+        )
     }
 }
 
@@ -54,23 +70,45 @@ internal fun <X> DrawScope.drawXAxis(
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
+    gridVisibility: GridVisibility,
 ) {
-    drawAxisLine(
-        color = Color.Green,
-        start = Offset(startXOffset, yOffset),
-        end = Offset(size.width - startXOffset / 2, yOffset),
-        strokeWidth = sizes.axisStrokeWidth(),
-        strokeStyle = xAxis.strokeStyle,
-        dashOn = sizes.axisDashOn(),
-        dashOff = sizes.axisDashOff(),
-    )
+    val valueHeight = textMeasurer.measure(text = AnnotatedString(xAxis.values.first().name), style = textStyle).size.height.toFloat()
+
+    if (gridVisibility.showXAxis()) {
+        drawAxisLine(
+            color = colors.yAxisValues(),
+            start = Offset(startXOffset, yOffset),
+            end = Offset(size.width - startXOffset / 2, yOffset),
+            strokeWidth = sizes.axisStrokeWidth(),
+            strokeStyle = xAxis.axisStrokeStyle,
+            dashOn = sizes.axisDashOn(),
+            dashOff = sizes.axisDashOff(),
+        )
+    }
 
     val axisWidth = size.width - startXOffset / 2 - startXOffset
     val gapBetweenValues = if (xAxis.values.size > 1) axisWidth / (xAxis.values.size - 1) else 0f
 
     var startXValueOffset = startXOffset
-    xAxis.values.forEach { xValue ->
+    xAxis.values.forEachIndexed { index, xValue ->
         val valueWidth = textMeasurer.measure(text = AnnotatedString(xValue.name), style = textStyle).size.width.toFloat()
+
+        if (gridVisibility.showXGrid()) {
+            // Draw vertical grid line matching the value on X axis
+            if (index in 1..<xAxis.values.size) {
+                drawAxisLine(
+                    color = colors.xAxisGrid(),
+                    start = Offset(startXValueOffset, yOffset),
+                    end = Offset(startXValueOffset, valueHeight / 2),
+                    strokeWidth = sizes.axisStrokeWidth(),
+                    strokeStyle = xAxis.gridStrokeStyle,
+                    dashOn = sizes.axisDashOn(),
+                    dashOff = sizes.axisDashOff(),
+                )
+            }
+        }
+
+        // Draw value on X axis
         startXValueOffset -= valueWidth / 2
 
         drawText(
@@ -97,24 +135,42 @@ internal fun <Y> DrawScope.drawYAxis(
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
+    gridVisibility: GridVisibility,
 ) {
     val valueHeight = textMeasurer.measure(text = AnnotatedString(yAxis.values.first().name), style = textStyle).size.height.toFloat()
+    val axisWidth = size.width - xOffset / 2
 
-    drawAxisLine(
-        color = Color.Red,
-        start = Offset(xOffset, endYOffset),
-        end = Offset(xOffset, valueHeight / 2),
-        strokeWidth = sizes.axisStrokeWidth(),
-        strokeStyle = yAxis.strokeStyle,
-        dashOn = sizes.axisDashOn(),
-        dashOff = sizes.axisDashOff(),
-    )
+    if (gridVisibility.showYAxis()) {
+        drawAxisLine(
+            color = colors.yAxisValues(),
+            start = Offset(xOffset, endYOffset),
+            end = Offset(xOffset, valueHeight / 2),
+            strokeWidth = sizes.axisStrokeWidth(),
+            strokeStyle = yAxis.axisStrokeStyle,
+            dashOn = sizes.axisDashOn(),
+            dashOff = sizes.axisDashOff(),
+        )
+    }
 
     val axisHeight = endYOffset - valueHeight / 2
     val gapBetweenValues = if (yAxis.values.size > 1) axisHeight / (yAxis.values.size - 1) else 0f
 
     var startYValueOffset = endYOffset - valueHeight / 2
     yAxis.values.forEach { yValue ->
+        if (gridVisibility.showYGrid()) {
+            // Draw horizontal grid line matching the value on Y axis
+            drawAxisLine(
+                color = colors.yAxisValues(),
+                start = Offset(xOffset, startYValueOffset + valueHeight / 2),
+                end = Offset(axisWidth, startYValueOffset + valueHeight / 2),
+                strokeWidth = sizes.axisStrokeWidth(),
+                strokeStyle = yAxis.gridStrokeStyle,
+                dashOn = sizes.axisDashOn(),
+                dashOff = sizes.axisDashOff(),
+            )
+        }
+
+        // Draw value on Y axis
         drawText(
             textMeasurer = textMeasurer,
             text = yValue.name,

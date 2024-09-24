@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.tweener.charts.drawAxes
 import com.tweener.charts.model.ChartColors
 import com.tweener.charts.model.ChartSizes
+import com.tweener.charts.model.GridVisibility
 import com.tweener.charts.model.XAxis
 import com.tweener.charts.model.YAxis
 import com.tweener.charts.type.line.model.Line
@@ -35,18 +36,15 @@ fun <X, Y> LineChart(
     Canvas(
         modifier = modifier.fillMaxSize(),
     ) {
-        if (xAxis.values.size > 1 && yAxis.values.size > 1) {
-            drawAxes(
-                textMeasurer = textMeasurer,
-                xAxis = xAxis,
-                yAxis = yAxis,
-                colors = colors,
-                sizes = sizes,
-                showXAxis = gridVisibility.showXAxis(),
-                showYAxis = gridVisibility.showYAxis(),
-                textStyle = textStyle,
-            )
-        }
+        drawAxes(
+            textMeasurer = textMeasurer,
+            xAxis = xAxis,
+            yAxis = yAxis,
+            textStyle = textStyle,
+            colors = colors,
+            sizes = sizes,
+            gridVisibility = gridVisibility,
+        )
     }
 }
 
@@ -56,9 +54,13 @@ object LineChartDefaults {
     fun gridVisibility(
         showXAxis: Boolean = true,
         showYAxis: Boolean = true,
+        showXGrid: Boolean = true,
+        showYGrid: Boolean = true,
     ): GridVisibility = GridVisibility(
         showXAxis = showXAxis,
         showYAxis = showYAxis,
+        showXGrid = showXGrid,
+        showYGrid = showYGrid,
     )
 
     fun chartSizes(
@@ -76,21 +78,15 @@ object LineChartDefaults {
     @Composable
     fun chartColors(
         xAxisValues: Color = MaterialTheme.colorScheme.onBackground,
+        xAxisGrid: Color = MaterialTheme.colorScheme.outline,
         yAxisValues: Color = MaterialTheme.colorScheme.onBackground,
+        yAxisGrid: Color = MaterialTheme.colorScheme.outline,
     ): LineChartColors = LineChartColors(
         xAxisValues = xAxisValues,
+        xAxisGrid = xAxisGrid,
         yAxisValues = yAxisValues,
+        yAxisGrid = yAxisGrid,
     )
-}
-
-@Immutable
-class GridVisibility internal constructor(
-    private val showXAxis: Boolean,
-    private val showYAxis: Boolean,
-) {
-    internal fun showXAxis(): Boolean = showXAxis
-
-    internal fun showYAxis(): Boolean = showYAxis
 }
 
 @Immutable
@@ -104,5 +100,7 @@ class LineChartSizes internal constructor(
 @Immutable
 class LineChartColors internal constructor(
     xAxisValues: Color,
+    xAxisGrid: Color,
     yAxisValues: Color,
-) : ChartColors(xAxisValues = xAxisValues, yAxisValues = yAxisValues)
+    yAxisGrid: Color,
+) : ChartColors(xAxisValues = xAxisValues, xAxisGrid = xAxisGrid, yAxisValues = yAxisValues, yAxisGrid = yAxisGrid)

@@ -1,9 +1,7 @@
 package com.tweener.charts.type.line
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +18,7 @@ import com.tweener.charts.type.line.model.PlottedPoint
 import com.tweener.charts.type.line.model.PointCoordinates
 import com.tweener.charts.type.line.model.PointX
 import com.tweener.charts.type.line.model.PointY
+import com.tweener.czan.preview.CzanThemePreview
 import com.tweener.czan.preview.UiModePreviews
 import com.tweener.czan.theme.Size
 
@@ -44,39 +43,51 @@ private fun LineChartPreview() {
         type = LineType.Straight,
     )
 
-    LineChart(
-        modifier = Modifier.fillMaxWidth().height(200.dp),
-        lines = listOf(line1),
-        xAxis = XAxis(
-            values = listOf(
-                XAxisValue(x = PointX(2020), name = "2020"),
-                XAxisValue(x = PointX(2021), name = "2021"),
-                XAxisValue(x = PointX(2022), name = "2022"),
-                XAxisValue(x = PointX(2023), name = "2023"),
-                XAxisValue(x = PointX(2024), name = "2024"),
+    CzanThemePreview {
+        LineChart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            lines = listOf(line1),
+            xAxis = XAxis(
+                values = listOf(
+                    XAxisValue(x = PointX(2020), name = "2020"),
+                    XAxisValue(x = PointX(2021), name = "2021"),
+                    XAxisValue(x = PointX(2022), name = "2022"),
+                    XAxisValue(x = PointX(2023), name = "2023"),
+                    XAxisValue(x = PointX(2024), name = "2024"),
+                ),
+                axisStrokeStyle = StrokeStyle.Solid,
+                gridStrokeStyle = StrokeStyle.Dashed,
             ),
-            strokeStyle = StrokeStyle.Dashed,
-        ),
-        yAxis = YAxis(
-            values = listOf(
-                YAxisValue(y = PointY(0.0), name = "0 €"),
-                YAxisValue(y = PointY(10000.0), name = "10 000 €"),
-                YAxisValue(y = PointY(20000.0), name = "20 000 €"),
-                YAxisValue(y = PointY(30000.0), name = "30 000 €"),
-                YAxisValue(y = PointY(40000.0), name = "40 000 €"),
+            yAxis = YAxis(
+                values = listOf(
+                    YAxisValue(y = PointY(0.0), name = "0 €"),
+                    YAxisValue(y = PointY(10000.0), name = "10 000 €"),
+                    YAxisValue(y = PointY(20000.0), name = "20 000 €"),
+                    YAxisValue(y = PointY(30000.0), name = "30 000 €"),
+                    YAxisValue(y = PointY(40000.0), name = "40 000 €"),
+                ),
+                axisStrokeStyle = StrokeStyle.Solid,
+                gridStrokeStyle = StrokeStyle.Dashed,
             ),
-            strokeStyle = StrokeStyle.Solid,
-        ),
-        textStyle = MaterialTheme.typography.labelLarge,
-        gridVisibility = LineChartDefaults.gridVisibility(
-            showXAxis = true,
-            showYAxis = true,
-        ),
-        sizes = LineChartDefaults.chartSizes(
-            axisStrokeWidth = 2.dp,
-            axisDashOn = 8.dp,
-            axisDashOff = 8.dp,
-            axisValuesPadding = Size.Padding.Small,
+            textStyle = MaterialTheme.typography.labelLarge,
+            gridVisibility = LineChartDefaults.gridVisibility(
+                showXAxis = true,
+                showYAxis = true,
+            ),
+            colors = LineChartDefaults.chartColors(
+                xAxisValues = MaterialTheme.colorScheme.onBackground,
+                xAxisGrid = MaterialTheme.colorScheme.outline,
+                yAxisValues = MaterialTheme.colorScheme.onBackground,
+                yAxisGrid = MaterialTheme.colorScheme.outline,
+            ),
+            sizes = LineChartDefaults.chartSizes(
+                axisStrokeWidth = 1.dp,
+                axisDashOn = 8.dp,
+                axisDashOff = 8.dp,
+                axisValuesPadding = Size.Padding.Small,
+            )
         )
-    )
+    }
 }
