@@ -1,4 +1,4 @@
-package com.tweener.charts
+package com.tweener.charts.donut
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.core.Animatable
@@ -29,27 +29,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.tweener.charts.donut.model.Segment
 import com.tweener.common._internal.kotlinextensions.degrees
 import com.tweener.common._internal.kotlinextensions.radians
 import com.tweener.common._internal.utils.Degrees
 import com.tweener.czan.theme.Size
 import kotlin.math.atan2
 import kotlin.math.min
-
-/**
- * @author Vivien Mahe
- * @since 05/03/2024
- */
-
-data class Segment(
-    val id: String,
-    val angle: Degrees,
-    @FloatRange(from = 0.0, to = 1.0) val progress: Float = 1f,
-    val baseColor: Color,
-    val backgroundColor: Color = baseColor.copy(alpha = 0.1f),
-    val enabled: Boolean = true,
-    val selected: Boolean = false,
-)
 
 const val NO_SELECTED_SEGMENT = -1
 

@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
-import com.tweener.charts.DonutChart
-import com.tweener.charts.DonutChartDefault
-import com.tweener.charts.Segment
+import com.tweener.charts.donut.DonutChart
+import com.tweener.charts.donut.DonutChartDefault
+import com.tweener.charts.donut.model.Segment
 import com.tweener.common._internal.kotlinextensions.degrees
 import com.tweener.czan.preview.UiModePreviews
 import io.github.aakira.napier.Napier
