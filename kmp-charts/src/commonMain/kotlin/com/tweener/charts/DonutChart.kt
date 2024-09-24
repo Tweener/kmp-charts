@@ -48,6 +48,7 @@ data class Segment(
     val baseColor: Color,
     val backgroundColor: Color = baseColor.copy(alpha = 0.1f),
     val enabled: Boolean = true,
+    val selected: Boolean = false,
 )
 
 const val NO_SELECTED_SEGMENT = -1
@@ -79,11 +80,11 @@ fun DonutChart(
     val segmentsStartAngles = remember { mutableStateListOf<Degrees>() } // List of all segments starting angles
     val segmentsEndAngles = remember { mutableStateListOf<Degrees>() } // List of all segments ending angles
     val segmentDrawingAnimRatio = remember { Animatable(initialValue = initialSegmentDrawingAnimRatio) } // Ratio of a segment to be drawn when animating segments
-    var clickedSegmentIndex by remember { mutableIntStateOf(NO_SELECTED_SEGMENT) } // Clicked segment in chart
+    var clickedSegmentIndex by remember { mutableIntStateOf(segments.indexOfFirst { it.selected }) } // Clicked segment in chart
 
     LaunchedEffect(segments) {
-        // No segment selected when drawing them
-        clickedSegmentIndex = NO_SELECTED_SEGMENT
+        // Select a segment if requested, otherwise no segment selected
+        clickedSegmentIndex = segments.indexOfFirst { it.selected }
 
         // Compute each segment's starting and ending angles on the circle
         segmentsStartAngles.clear()
