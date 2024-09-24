@@ -1,4 +1,4 @@
-package com.tweener.charts.donut
+package com.tweener.charts.type.donut
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.core.Animatable
@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.tweener.charts.donut.model.Segment
+import com.tweener.charts.type.donut.model.Segment
 import com.tweener.common._internal.kotlinextensions.degrees
 import com.tweener.common._internal.kotlinextensions.radians
 import com.tweener.common._internal.utils.Degrees

@@ -1,4 +1,4 @@
-package com.tweener.charts.donut.model
+package com.tweener.charts.type.donut.model
 
 import androidx.annotation.FloatRange
 import androidx.compose.ui.graphics.Color
