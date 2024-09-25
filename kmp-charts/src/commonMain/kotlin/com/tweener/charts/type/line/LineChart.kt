@@ -11,7 +11,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.tweener.charts.drawAxes
+import com.tweener.charts.drawGrid
 import com.tweener.charts.model.ChartColors
 import com.tweener.charts.model.ChartSizes
 import com.tweener.charts.model.GridVisibility
@@ -36,7 +36,7 @@ fun <X, Y> LineChart(
     Canvas(
         modifier = modifier.fillMaxSize(),
     ) {
-        drawAxes(
+        drawGrid(
             textMeasurer = textMeasurer,
             xAxis = xAxis,
             yAxis = yAxis,

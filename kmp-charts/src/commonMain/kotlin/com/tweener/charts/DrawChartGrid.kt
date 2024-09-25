@@ -24,7 +24,7 @@ import com.tweener.charts.model.YAxisValue
  * @since 24/09/2024
  */
 
-internal fun <X, Y> DrawScope.drawAxes(
+internal fun <X, Y> DrawScope.drawGrid(
     textMeasurer: TextMeasurer,
     xAxis: XAxis<X>,
     yAxis: YAxis<Y>,
@@ -38,7 +38,7 @@ internal fun <X, Y> DrawScope.drawAxes(
         val yAxisXOffset = computeYValueMaxWidth(textMeasurer, textStyle = textStyle, yAxis.values) + sizes.axisValuesPadding().toPx()
         val yAxisEndYOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
 
-        drawXAxis(
+        drawXGrid(
             textMeasurer = textMeasurer,
             xAxis = xAxis,
             yOffset = yAxisEndYOffset,
@@ -49,7 +49,7 @@ internal fun <X, Y> DrawScope.drawAxes(
             gridVisibility = gridVisibility,
         )
 
-        drawYAxis(
+        drawYGrid(
             textMeasurer = textMeasurer,
             yAxis = yAxis,
             xOffset = yAxisXOffset,
@@ -62,7 +62,7 @@ internal fun <X, Y> DrawScope.drawAxes(
     }
 }
 
-internal fun <X> DrawScope.drawXAxis(
+private fun <X> DrawScope.drawXGrid(
     textMeasurer: TextMeasurer,
     xAxis: XAxis<X>,
     yOffset: Float,
@@ -74,6 +74,7 @@ internal fun <X> DrawScope.drawXAxis(
 ) {
     val valueHeight = textMeasurer.measure(text = AnnotatedString(xAxis.values.first().name), style = textStyle).size.height.toFloat()
 
+    // Draw X axis
     if (gridVisibility.showXAxis()) {
         drawAxisLine(
             color = colors.yAxisValues(),
@@ -127,7 +128,7 @@ internal fun <X> DrawScope.drawXAxis(
     }
 }
 
-internal fun <Y> DrawScope.drawYAxis(
+private fun <Y> DrawScope.drawYGrid(
     textMeasurer: TextMeasurer,
     yAxis: YAxis<Y>,
     xOffset: Float,
@@ -140,6 +141,7 @@ internal fun <Y> DrawScope.drawYAxis(
     val valueHeight = textMeasurer.measure(text = AnnotatedString(yAxis.values.first().name), style = textStyle).size.height.toFloat()
     val axisWidth = size.width - xOffset / 2
 
+    // Draw Y axis
     if (gridVisibility.showYAxis()) {
         drawAxisLine(
             color = colors.yAxisValues(),
