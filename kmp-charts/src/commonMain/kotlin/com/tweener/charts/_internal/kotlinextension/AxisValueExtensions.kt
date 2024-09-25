@@ -13,11 +13,11 @@ import com.tweener.charts.model.AxisValue
 /**
  * Computes the axis value width.
  */
-fun <T> AxisValue<T>.computeValueWidth(textMeasurer: TextMeasurer, textStyle: TextStyle): Float =
+fun AxisValue.computeValueWidth(textMeasurer: TextMeasurer, textStyle: TextStyle): Float =
     textMeasurer.measure(text = AnnotatedString(name), style = textStyle).size.width.toFloat()
 
 /**
  * Computes the axis value height.
  */
-fun <T> AxisValue<T>.computeValueHeight(textMeasurer: TextMeasurer, textStyle: TextStyle): Float =
+fun AxisValue.computeValueHeight(textMeasurer: TextMeasurer, textStyle: TextStyle): Float =
     textMeasurer.measure(text = AnnotatedString(name), style = textStyle).size.height.toFloat()

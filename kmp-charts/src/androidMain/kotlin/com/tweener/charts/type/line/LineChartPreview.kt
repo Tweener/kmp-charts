@@ -13,7 +13,7 @@ import com.tweener.charts.model.StrokeStyle
 import com.tweener.charts.type.line.model.Line
 import com.tweener.charts.type.line.model.LineType
 import com.tweener.charts.type.line.model.PlottedPoint
-import com.tweener.charts.type.line.model.PointCoordinates
+import com.tweener.charts.type.line.model.PointValues
 import com.tweener.czan.preview.CzanThemePreview
 import com.tweener.czan.preview.UiModePreviews
 import com.tweener.czan.theme.Size
@@ -29,14 +29,15 @@ private fun LineChartPreview() {
     val line1 = Line(
         id = "line1",
         plottedPoints = listOf(
-            PlottedPoint(id = "p1", coordinates = PointCoordinates(x = 2020, y = 1000.0)),
-            PlottedPoint(id = "p2", coordinates = PointCoordinates(x = 2021, y = 4389.0)),
-            PlottedPoint(id = "p3", coordinates = PointCoordinates(x = 2022, y = 9817.0)),
-            PlottedPoint(id = "p4", coordinates = PointCoordinates(x = 2023, y = 16489.0)),
-            PlottedPoint(id = "p5", coordinates = PointCoordinates(x = 2024, y = 32896.0)),
+            PlottedPoint(id = "p1", values = PointValues(x = 2020.0, y = 1000.0)),
+            PlottedPoint(id = "p2", values = PointValues(x = 2021.0, y = 4389.0)),
+            PlottedPoint(id = "p3", values = PointValues(x = 2022.0, y = 9817.0)),
+            PlottedPoint(id = "p4", values = PointValues(x = 2023.0, y = 16489.0)),
+            PlottedPoint(id = "p5", values = PointValues(x = 2024.0, y = 32896.0)),
         ),
         color = Color.Red,
         type = LineType.Straight,
+        strokeWidth = 4.dp,
     )
 
     CzanThemePreview {
@@ -47,11 +48,11 @@ private fun LineChartPreview() {
             lines = listOf(line1),
             xAxis = Axis(
                 values = listOf(
-                    AxisValue(value = 2020, name = "2020"),
-                    AxisValue(value = 2021, name = "2021"),
-                    AxisValue(value = 2022, name = "2022"),
-                    AxisValue(value = 2023, name = "2023"),
-                    AxisValue(value = 2024, name = "2024"),
+                    AxisValue(value = 2020.0, name = "2020"),
+                    AxisValue(value = 2021.0, name = "2021"),
+                    AxisValue(value = 2022.0, name = "2022"),
+                    AxisValue(value = 2023.0, name = "2023"),
+                    AxisValue(value = 2024.0, name = "2024"),
                 ),
                 axisStrokeStyle = StrokeStyle.Solid,
                 gridStrokeStyle = StrokeStyle.Dashed,

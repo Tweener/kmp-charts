@@ -23,11 +23,11 @@ import com.tweener.charts.model.StrokeStyle
  * @since 24/09/2024
  */
 
-internal fun <X, Y> DrawScope.drawGrid(
+internal fun DrawScope.drawGrid(
     textMeasurer: TextMeasurer,
     gridOffsets: GridOffsets,
-    xAxis: Axis<X>,
-    yAxis: Axis<Y>,
+    xAxis: Axis,
+    yAxis: Axis,
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
@@ -56,10 +56,10 @@ internal fun <X, Y> DrawScope.drawGrid(
     }
 }
 
-private fun <X> DrawScope.drawXGrid(
+private fun DrawScope.drawXGrid(
     textMeasurer: TextMeasurer,
     gridOffsets: GridOffsets,
-    xAxis: Axis<X>,
+    xAxis: Axis,
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
@@ -119,10 +119,10 @@ private fun <X> DrawScope.drawXGrid(
     }
 }
 
-private fun <Y> DrawScope.drawYGrid(
+private fun DrawScope.drawYGrid(
     textMeasurer: TextMeasurer,
     gridOffsets: GridOffsets,
-    yAxis: Axis<Y>,
+    yAxis: Axis,
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
@@ -151,7 +151,7 @@ private fun <Y> DrawScope.drawYGrid(
             // Draw horizontal grid line matching the value on Y axis, except for the first value (which is the X axis)
             if (index in 1..<yAxis.values.size) {
                 drawAxisLine(
-                    color = colors.yAxisValues(),
+                    color = colors.yAxisGrid(),
                     start = Offset(gridOffsets.topStartCorner.x, startYValueOffset + valueHeight / 2),
                     end = Offset(gridOffsets.topEndCorner.x, startYValueOffset + valueHeight / 2),
                     strokeWidth = sizes.axisStrokeWidth(),

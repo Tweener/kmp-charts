@@ -17,17 +17,18 @@ import com.tweener.charts._internal.kotlinextension.computeValueMaxWidth
 import com.tweener.charts.drawGrid
 import com.tweener.charts.model.Axis
 import com.tweener.charts.model.ChartColors
+import com.tweener.charts.model.ChartDefaults
 import com.tweener.charts.model.ChartSizes
 import com.tweener.charts.model.GridOffsets
 import com.tweener.charts.model.GridVisibility
 import com.tweener.charts.type.line.model.Line
-import com.tweener.czan.theme.Size
+import com.tweener.charts.type.line.model.drawLines
 
 @Composable
-fun <X, Y> LineChart(
-    lines: List<Line<X, Y>>,
-    xAxis: Axis<X>,
-    yAxis: Axis<Y>,
+fun LineChart(
+    lines: List<Line>,
+    xAxis: Axis,
+    yAxis: Axis,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
     gridVisibility: GridVisibility = LineChartDefaults.gridVisibility(),
@@ -39,12 +40,14 @@ fun <X, Y> LineChart(
     Canvas(
         modifier = modifier.fillMaxSize(),
     ) {
+        // Compute grid offsets (4 corners)
+        val xAxisValueWidth = xAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
         val xAxisValueHeight = xAxis.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
         val yAxisValueWidth = yAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
         val yAxisValueHeight = yAxis.computeValueMaxHeight(textMeasurer = textMeasurer, textStyle = textStyle)
 
         val startOffset = yAxisValueWidth + sizes.axisValuesPadding().toPx()
-        val endOffset = size.width - startOffset / 2
+        val endOffset = size.width - xAxisValueWidth / 2
         val topOffset = yAxisValueHeight / 2
         val bottomOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
 
@@ -66,21 +69,19 @@ fun <X, Y> LineChart(
             gridVisibility = gridVisibility,
         )
 
-        lines.forEach { line ->
-            line.plottedPoints.forEach { point ->
-
-            }
-        }
+        drawLines(lines = lines, gridOffsets = gridOffsets, xAxis = xAxis, yAxis = yAxis)
     }
 }
 
 object LineChartDefaults {
 
+    val LineStrokeWidth = 2.dp
+
     fun gridVisibility(
-        showXAxis: Boolean = true,
-        showYAxis: Boolean = true,
-        showXGrid: Boolean = true,
-        showYGrid: Boolean = true,
+        showXAxis: Boolean = ChartDefaults.GridVisibility.ShowXAxis,
+        showYAxis: Boolean = ChartDefaults.GridVisibility.ShowYAxis,
+        showXGrid: Boolean = ChartDefaults.GridVisibility.ShowXGrid,
+        showYGrid: Boolean = ChartDefaults.GridVisibility.ShowYGrid,
     ): GridVisibility = GridVisibility(
         showXAxis = showXAxis,
         showYAxis = showYAxis,
@@ -89,10 +90,10 @@ object LineChartDefaults {
     )
 
     fun chartSizes(
-        axisStrokeWidth: Dp = 4.dp,
-        axisDashOn: Dp = 10.dp,
-        axisDashOff: Dp = 10.dp,
-        axisValuesPadding: Dp = Size.Padding.Tiny,
+        axisStrokeWidth: Dp = ChartDefaults.ChartSizes.AxisStrokeWidth,
+        axisDashOn: Dp = ChartDefaults.ChartSizes.AxisDashOn,
+        axisDashOff: Dp = ChartDefaults.ChartSizes.AxisDashOff,
+        axisValuesPadding: Dp = ChartDefaults.ChartSizes.AxisValuesPadding,
     ): LineChartSizes = LineChartSizes(
         axisStrokeWidth = axisStrokeWidth,
         axisDashOn = axisDashOn,
@@ -102,10 +103,10 @@ object LineChartDefaults {
 
     @Composable
     fun chartColors(
-        xAxisValues: Color = MaterialTheme.colorScheme.onBackground,
-        xAxisGrid: Color = MaterialTheme.colorScheme.outline,
-        yAxisValues: Color = MaterialTheme.colorScheme.onBackground,
-        yAxisGrid: Color = MaterialTheme.colorScheme.outline,
+        xAxisValues: Color = ChartDefaults.ChartColors.XAxisValues,
+        xAxisGrid: Color = ChartDefaults.ChartColors.XAxisGrid,
+        yAxisValues: Color = ChartDefaults.ChartColors.YAxisValues,
+        yAxisGrid: Color = ChartDefaults.ChartColors.YAxisGrid,
     ): LineChartColors = LineChartColors(
         xAxisValues = xAxisValues,
         xAxisGrid = xAxisGrid,

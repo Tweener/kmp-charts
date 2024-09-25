@@ -12,7 +12,7 @@ import com.tweener.charts.model.Axis
 /**
  * Computes the maximum width from the list of values.
  */
-fun <T> Axis<T>.computeValueMaxWidth(textMeasurer: TextMeasurer, textStyle: TextStyle): Float {
+fun Axis.computeValueMaxWidth(textMeasurer: TextMeasurer, textStyle: TextStyle): Float {
     var maxValueWidth = 0f
     values.forEach { value ->
         val valueWidth = value.computeValueWidth(textMeasurer = textMeasurer, textStyle = textStyle)
@@ -25,7 +25,7 @@ fun <T> Axis<T>.computeValueMaxWidth(textMeasurer: TextMeasurer, textStyle: Text
 /**
  * Computes the maximum height from the list of values.
  */
-fun <T> Axis<T>.computeValueMaxHeight(textMeasurer: TextMeasurer, textStyle: TextStyle): Float {
+fun Axis.computeValueMaxHeight(textMeasurer: TextMeasurer, textStyle: TextStyle): Float {
     var maxValueHeight = 0f
     values.forEach { value ->
         val valueHeight = value.computeValueHeight(textMeasurer = textMeasurer, textStyle = textStyle)
