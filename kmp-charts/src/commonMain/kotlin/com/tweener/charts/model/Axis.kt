@@ -6,8 +6,8 @@ import com.tweener.charts.model.StrokeStyle.Companion.DefaultStyle
  * @author Vivien Mahe
  * @since 24/09/2024
  */
-data class XAxis<X>(
-    val values: List<XAxisValue<X>>,
+data class Axis<T>(
+    val values: List<AxisValue<T>>,
     val axisStrokeStyle: StrokeStyle = DefaultStyle,
     val gridStrokeStyle: StrokeStyle = DefaultStyle,
 )

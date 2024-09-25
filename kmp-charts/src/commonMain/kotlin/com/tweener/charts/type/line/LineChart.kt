@@ -11,20 +11,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.tweener.charts.computeValueMaxHeight
+import com.tweener.charts.computeValueMaxWidth
 import com.tweener.charts.drawGrid
+import com.tweener.charts.model.Axis
 import com.tweener.charts.model.ChartColors
 import com.tweener.charts.model.ChartSizes
 import com.tweener.charts.model.GridVisibility
-import com.tweener.charts.model.XAxis
-import com.tweener.charts.model.YAxis
 import com.tweener.charts.type.line.model.Line
 import com.tweener.czan.theme.Size
 
 @Composable
 fun <X, Y> LineChart(
     lines: List<Line<X, Y>>,
-    xAxis: XAxis<X>,
-    yAxis: YAxis<Y>,
+    xAxis: Axis<X>,
+    yAxis: Axis<Y>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
     gridVisibility: GridVisibility = LineChartDefaults.gridVisibility(),
@@ -45,6 +46,15 @@ fun <X, Y> LineChart(
             sizes = sizes,
             gridVisibility = gridVisibility,
         )
+
+        val xAxisValueHeight = xAxis.values.map { it.name }.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
+        val yAxisXOffset = yAxis.values.map { it.name }.computeValueMaxWidth(textMeasurer, textStyle = textStyle) + sizes.axisValuesPadding().toPx()
+
+        lines.forEach { line ->
+            line.plottedPoints.forEach { point ->
+
+            }
+        }
     }
 }
 

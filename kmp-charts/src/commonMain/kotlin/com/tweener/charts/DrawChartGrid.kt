@@ -10,14 +10,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import com.tweener.charts.model.Axis
 import com.tweener.charts.model.ChartColors
 import com.tweener.charts.model.ChartSizes
 import com.tweener.charts.model.GridVisibility
 import com.tweener.charts.model.StrokeStyle
-import com.tweener.charts.model.XAxis
-import com.tweener.charts.model.XAxisValue
-import com.tweener.charts.model.YAxis
-import com.tweener.charts.model.YAxisValue
 
 /**
  * @author Vivien Mahe
@@ -26,16 +23,16 @@ import com.tweener.charts.model.YAxisValue
 
 internal fun <X, Y> DrawScope.drawGrid(
     textMeasurer: TextMeasurer,
-    xAxis: XAxis<X>,
-    yAxis: YAxis<Y>,
+    xAxis: Axis<X>,
+    yAxis: Axis<Y>,
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
     gridVisibility: GridVisibility,
 ) {
     if (xAxis.values.size > 1 && yAxis.values.size > 1) {
-        val xAxisValueHeight = computeXValueHeight(textMeasurer, textStyle = textStyle, xAxis.values)
-        val yAxisXOffset = computeYValueMaxWidth(textMeasurer, textStyle = textStyle, yAxis.values) + sizes.axisValuesPadding().toPx()
+        val xAxisValueHeight = xAxis.values.map { it.name }.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
+        val yAxisXOffset = yAxis.values.map { it.name }.computeValueMaxWidth(textMeasurer, textStyle = textStyle) + sizes.axisValuesPadding().toPx()
         val yAxisEndYOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
 
         drawXGrid(
@@ -64,7 +61,7 @@ internal fun <X, Y> DrawScope.drawGrid(
 
 private fun <X> DrawScope.drawXGrid(
     textMeasurer: TextMeasurer,
-    xAxis: XAxis<X>,
+    xAxis: Axis<X>,
     yOffset: Float,
     startXOffset: Float,
     textStyle: TextStyle,
@@ -130,7 +127,7 @@ private fun <X> DrawScope.drawXGrid(
 
 private fun <Y> DrawScope.drawYGrid(
     textMeasurer: TextMeasurer,
-    yAxis: YAxis<Y>,
+    yAxis: Axis<Y>,
     xOffset: Float,
     endYOffset: Float,
     textStyle: TextStyle,
@@ -215,20 +212,20 @@ private fun DrawScope.drawAxisLine(
 }
 
 /**
- * Computes the maximum width from the list of values to display on the Y axis.
+ * Computes the maximum width from the list of values.
  */
-private fun <Y> computeYValueMaxWidth(textMeasurer: TextMeasurer, textStyle: TextStyle, yAxisValues: List<YAxisValue<Y>>): Float {
-    var maxYValueWidth = 0
-    yAxisValues.forEach { yValue ->
-        val yValueWidth = textMeasurer.measure(text = AnnotatedString(yValue.name), style = textStyle).size.width
-        if (yValueWidth > maxYValueWidth) maxYValueWidth = yValueWidth
+fun List<String>.computeValueMaxWidth(textMeasurer: TextMeasurer, textStyle: TextStyle): Float {
+    var maxValueWidth = 0
+    forEach { name ->
+        val valueWidth = textMeasurer.measure(text = AnnotatedString(name), style = textStyle).size.width
+        if (valueWidth > maxValueWidth) maxValueWidth = valueWidth
     }
 
-    return maxYValueWidth.toFloat()
+    return maxValueWidth.toFloat()
 }
 
 /**
- * Computes the height for the values to display on the X axis.
+ * Computes the maximum height from the list of values.
  */
-private fun <X> computeXValueHeight(textMeasurer: TextMeasurer, textStyle: TextStyle, xAxisValues: List<XAxisValue<X>>): Float =
-    textMeasurer.measure(text = AnnotatedString(xAxisValues.first().name), style = textStyle).size.height.toFloat()
+fun List<String>.computeValueMaxHeight(textMeasurer: TextMeasurer, textStyle: TextStyle): Float =
+    textMeasurer.measure(text = AnnotatedString(first()), style = textStyle).size.height.toFloat()

@@ -8,12 +8,6 @@ import kotlin.jvm.JvmInline
  */
 
 data class PointCoordinates<X, Y>(
-    val x: PointX<X>,
-    val y: PointY<Y>,
+    val x: X,
+    val y: Y,
 )
-
-@JvmInline
-value class PointX<X>(val value: X)
-
-@JvmInline
-value class PointY<Y>(val value: Y)
