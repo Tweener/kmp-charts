@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -17,6 +18,7 @@ import com.tweener.charts.drawGrid
 import com.tweener.charts.model.Axis
 import com.tweener.charts.model.ChartColors
 import com.tweener.charts.model.ChartSizes
+import com.tweener.charts.model.GridOffsets
 import com.tweener.charts.model.GridVisibility
 import com.tweener.charts.type.line.model.Line
 import com.tweener.czan.theme.Size
@@ -37,8 +39,25 @@ fun <X, Y> LineChart(
     Canvas(
         modifier = modifier.fillMaxSize(),
     ) {
+        val xAxisValueHeight = xAxis.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
+        val yAxisValueWidth = yAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
+        val yAxisValueHeight = yAxis.computeValueMaxHeight(textMeasurer = textMeasurer, textStyle = textStyle)
+
+        val startOffset = yAxisValueWidth + sizes.axisValuesPadding().toPx()
+        val endOffset = size.width - startOffset / 2
+        val topOffset = yAxisValueHeight / 2
+        val bottomOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
+
+        val gridOffsets = GridOffsets(
+            topStartCorner = Offset(startOffset, topOffset),
+            bottomStartCorner = Offset(startOffset, bottomOffset),
+            topEndCorner = Offset(endOffset, topOffset),
+            bottomEndCorner = Offset(endOffset, bottomOffset),
+        )
+
         drawGrid(
             textMeasurer = textMeasurer,
+            gridOffsets = gridOffsets,
             xAxis = xAxis,
             yAxis = yAxis,
             textStyle = textStyle,
@@ -47,11 +66,6 @@ fun <X, Y> LineChart(
             gridVisibility = gridVisibility,
         )
 
-        val xAxisValueHeight = xAxis.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
-        val yAxisValueWidth = yAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
-        val yAxisStartXOffset = yAxisValueWidth + sizes.axisValuesPadding().toPx()
-        val yAxisEndYOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
-
         lines.forEach { line ->
             line.plottedPoints.forEach { point ->
 
@@ -59,7 +73,6 @@ fun <X, Y> LineChart(
         }
     }
 }
-
 
 object LineChartDefaults {
 

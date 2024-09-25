@@ -2,8 +2,6 @@ package com.tweener.charts._internal.kotlinextension
 
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
-import com.tweener.charts.computeValueHeight
-import com.tweener.charts.computeValueWidth
 import com.tweener.charts.model.Axis
 
 /**

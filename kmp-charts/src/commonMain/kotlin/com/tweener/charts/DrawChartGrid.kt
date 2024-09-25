@@ -10,11 +10,11 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import com.tweener.charts._internal.kotlinextension.computeValueMaxHeight
-import com.tweener.charts._internal.kotlinextension.computeValueMaxWidth
 import com.tweener.charts._internal.kotlinextension.computeValueWidth
 import com.tweener.charts.model.Axis
 import com.tweener.charts.model.ChartColors
 import com.tweener.charts.model.ChartSizes
+import com.tweener.charts.model.GridOffsets
 import com.tweener.charts.model.GridVisibility
 import com.tweener.charts.model.StrokeStyle
 
@@ -25,6 +25,7 @@ import com.tweener.charts.model.StrokeStyle
 
 internal fun <X, Y> DrawScope.drawGrid(
     textMeasurer: TextMeasurer,
+    gridOffsets: GridOffsets,
     xAxis: Axis<X>,
     yAxis: Axis<Y>,
     textStyle: TextStyle,
@@ -33,15 +34,10 @@ internal fun <X, Y> DrawScope.drawGrid(
     gridVisibility: GridVisibility,
 ) {
     if (xAxis.values.size > 1 && yAxis.values.size > 1) {
-        val xAxisValueHeight = xAxis.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
-        val yAxisXOffset = yAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle) + sizes.axisValuesPadding().toPx()
-        val yAxisEndYOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
-
         drawXGrid(
             textMeasurer = textMeasurer,
+            gridOffsets = gridOffsets,
             xAxis = xAxis,
-            yOffset = yAxisEndYOffset,
-            startXOffset = yAxisXOffset,
             textStyle = textStyle,
             colors = colors,
             sizes = sizes,
@@ -50,9 +46,8 @@ internal fun <X, Y> DrawScope.drawGrid(
 
         drawYGrid(
             textMeasurer = textMeasurer,
+            gridOffsets = gridOffsets,
             yAxis = yAxis,
-            xOffset = yAxisXOffset,
-            endYOffset = yAxisEndYOffset,
             textStyle = textStyle,
             colors = colors,
             sizes = sizes,
@@ -63,24 +58,22 @@ internal fun <X, Y> DrawScope.drawGrid(
 
 private fun <X> DrawScope.drawXGrid(
     textMeasurer: TextMeasurer,
+    gridOffsets: GridOffsets,
     xAxis: Axis<X>,
-    yOffset: Float,
-    startXOffset: Float,
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
     gridVisibility: GridVisibility,
 ) {
-    val valueHeight = xAxis.computeValueMaxHeight(textMeasurer = textMeasurer, textStyle = textStyle)
-    val axisWidth = size.width - startXOffset / 2 - startXOffset
+    val axisWidth = gridOffsets.topEndCorner.x - gridOffsets.topStartCorner.x
     val gapBetweenValues = if (xAxis.values.size > 1) axisWidth / (xAxis.values.size - 1) else 0f
 
     // Draw X axis
     if (gridVisibility.showXAxis()) {
         drawAxisLine(
             color = colors.yAxisValues(),
-            start = Offset(startXOffset, yOffset),
-            end = Offset(size.width - startXOffset / 2, yOffset),
+            start = gridOffsets.bottomStartCorner,
+            end = gridOffsets.bottomEndCorner,
             strokeWidth = sizes.axisStrokeWidth(),
             strokeStyle = xAxis.axisStrokeStyle,
             dashOn = sizes.axisDashOn(),
@@ -88,17 +81,17 @@ private fun <X> DrawScope.drawXGrid(
         )
     }
 
-    var startXValueOffset = startXOffset
+    var startXValueOffset = gridOffsets.topStartCorner.x
     xAxis.values.forEachIndexed { index, xValue ->
         val valueWidth = xValue.computeValueWidth(textMeasurer = textMeasurer, textStyle = textStyle)
 
         if (gridVisibility.showXGrid()) {
-            // Draw vertical grid line matching the value on X axis
+            // Draw vertical grid line matching the value on X axis, except for the first value (which is the Y axis)
             if (index in 1..<xAxis.values.size) {
                 drawAxisLine(
                     color = colors.xAxisGrid(),
-                    start = Offset(startXValueOffset, yOffset),
-                    end = Offset(startXValueOffset, valueHeight / 2),
+                    start = Offset(startXValueOffset, gridOffsets.bottomStartCorner.y),
+                    end = Offset(startXValueOffset, gridOffsets.topStartCorner.y),
                     strokeWidth = sizes.axisStrokeWidth(),
                     strokeStyle = xAxis.gridStrokeStyle,
                     dashOn = sizes.axisDashOn(),
@@ -118,7 +111,7 @@ private fun <X> DrawScope.drawXGrid(
             overflow = TextOverflow.Ellipsis,
             topLeft = Offset(
                 x = startXValueOffset.coerceAtMost(size.width),
-                y = yOffset + sizes.axisValuesPadding().toPx(),
+                y = gridOffsets.bottomStartCorner.y + sizes.axisValuesPadding().toPx(),
             )
         )
 
@@ -128,25 +121,23 @@ private fun <X> DrawScope.drawXGrid(
 
 private fun <Y> DrawScope.drawYGrid(
     textMeasurer: TextMeasurer,
+    gridOffsets: GridOffsets,
     yAxis: Axis<Y>,
-    xOffset: Float,
-    endYOffset: Float,
     textStyle: TextStyle,
     colors: ChartColors,
     sizes: ChartSizes,
     gridVisibility: GridVisibility,
 ) {
     val valueHeight = yAxis.computeValueMaxHeight(textMeasurer = textMeasurer, textStyle = textStyle)
-    val axisWidth = size.width - xOffset / 2
-    val axisHeight = endYOffset - valueHeight / 2
+    val axisHeight = gridOffsets.bottomStartCorner.y - gridOffsets.topStartCorner.y
     val gapBetweenValues = if (yAxis.values.size > 1) axisHeight / (yAxis.values.size - 1) else 0f
 
     // Draw Y axis
     if (gridVisibility.showYAxis()) {
         drawAxisLine(
             color = colors.yAxisValues(),
-            start = Offset(xOffset, endYOffset),
-            end = Offset(xOffset, valueHeight / 2),
+            start = gridOffsets.bottomStartCorner,
+            end = gridOffsets.topStartCorner,
             strokeWidth = sizes.axisStrokeWidth(),
             strokeStyle = yAxis.axisStrokeStyle,
             dashOn = sizes.axisDashOn(),
@@ -154,19 +145,21 @@ private fun <Y> DrawScope.drawYGrid(
         )
     }
 
-    var startYValueOffset = endYOffset - valueHeight / 2
-    yAxis.values.forEach { yValue ->
+    var startYValueOffset = gridOffsets.bottomStartCorner.y - valueHeight / 2
+    yAxis.values.forEachIndexed { index, yValue ->
         if (gridVisibility.showYGrid()) {
-            // Draw horizontal grid line matching the value on Y axis
-            drawAxisLine(
-                color = colors.yAxisValues(),
-                start = Offset(xOffset, startYValueOffset + valueHeight / 2),
-                end = Offset(axisWidth, startYValueOffset + valueHeight / 2),
-                strokeWidth = sizes.axisStrokeWidth(),
-                strokeStyle = yAxis.gridStrokeStyle,
-                dashOn = sizes.axisDashOn(),
-                dashOff = sizes.axisDashOff(),
-            )
+            // Draw horizontal grid line matching the value on Y axis, except for the first value (which is the X axis)
+            if (index in 1..<yAxis.values.size) {
+                drawAxisLine(
+                    color = colors.yAxisValues(),
+                    start = Offset(gridOffsets.topStartCorner.x, startYValueOffset + valueHeight / 2),
+                    end = Offset(gridOffsets.topEndCorner.x, startYValueOffset + valueHeight / 2),
+                    strokeWidth = sizes.axisStrokeWidth(),
+                    strokeStyle = yAxis.gridStrokeStyle,
+                    dashOn = sizes.axisDashOn(),
+                    dashOff = sizes.axisDashOff(),
+                )
+            }
         }
 
         // Draw value on Y axis
