@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -38,7 +39,9 @@ fun LineChart(
     val textMeasurer = rememberTextMeasurer()
 
     Canvas(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .clipToBounds(),
     ) {
         // Compute grid offsets (4 corners)
         val xAxisValueWidth = xAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
