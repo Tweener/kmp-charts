@@ -11,8 +11,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.tweener.charts.computeValueMaxHeight
-import com.tweener.charts.computeValueMaxWidth
+import com.tweener.charts._internal.kotlinextension.computeValueMaxHeight
+import com.tweener.charts._internal.kotlinextension.computeValueMaxWidth
 import com.tweener.charts.drawGrid
 import com.tweener.charts.model.Axis
 import com.tweener.charts.model.ChartColors
@@ -47,8 +47,10 @@ fun <X, Y> LineChart(
             gridVisibility = gridVisibility,
         )
 
-        val xAxisValueHeight = xAxis.values.map { it.name }.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
-        val yAxisXOffset = yAxis.values.map { it.name }.computeValueMaxWidth(textMeasurer, textStyle = textStyle) + sizes.axisValuesPadding().toPx()
+        val xAxisValueHeight = xAxis.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
+        val yAxisValueWidth = yAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
+        val yAxisStartXOffset = yAxisValueWidth + sizes.axisValuesPadding().toPx()
+        val yAxisEndYOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
 
         lines.forEach { line ->
             line.plottedPoints.forEach { point ->
