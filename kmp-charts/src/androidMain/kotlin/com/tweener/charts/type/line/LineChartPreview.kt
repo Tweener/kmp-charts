@@ -44,44 +44,54 @@ private enum class PeriodType {
 @UiModePreviews
 @Composable
 private fun LineChartPreview() {
+    val lineColors = listOf(Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Magenta, Color.Gray)
     var periodType by remember { mutableStateOf(PeriodType.ONE_MONTH) }
     var lines by remember { mutableStateOf(listOf<Line>()) }
     var xAxis by remember { mutableStateOf<Axis?>(null) }
     var yAxis by remember { mutableStateOf<Axis?>(null) }
 
+    val onAddNewLine: () -> Unit = {
+        com.tweener.common._internal.kotlinextensions.safeLet(xAxis, yAxis) { xAxis, yAxis ->
+            val dataPoints = randomizePoints(xAxis = xAxis, yAxis = yAxis)
+
+            val line = Line(
+                id = lines.size.toString(),
+                plottedPoints = dataPoints,
+                color = lineColors[lines.size % lineColors.size],
+                fillColorAlpha = 0.8f,
+                type = LineType(lines.size % 2),
+                strokeWidth = 2.dp,
+            )
+
+            lines = lines.toMutableList().apply { add(line) }
+        }
+    }
+
     val onRandomizeChart: () -> Unit = {
         com.tweener.common._internal.kotlinextensions.safeLet(xAxis, yAxis) { xAxis, yAxis ->
-            // Randomize points
-            val dataPoints = mutableListOf<PlottedPoint>()
-
-            val lowestYValue = yAxis.values.minByOrNull { it.value }!!.value
-            val highestYValue = yAxis.values.maxByOrNull { it.value }!!.value
-
-            xAxis.values.forEach { xValue ->
-                val x = xValue.value
-                val y = Random.nextDouble(lowestYValue, highestYValue)
-
-                dataPoints.add(PlottedPoint(id = "#$xValue", values = PointValues(x = x, y = y)))
+            lines = lines.map { line ->
+                line.copy(plottedPoints = randomizePoints(xAxis = xAxis, yAxis = yAxis))
             }
-
-            val line1 = Line(
-                id = "line1",
-                plottedPoints = dataPoints,
-                color = Color.Red,
-                fillColorAlpha = 0.8f,
-                type = LineType.Curved,
-                strokeWidth = 2.dp,
-            )
-
-            val line2 = Line(
-                id = "line2",
-                plottedPoints = dataPoints,
-                color = Color.Blue,
-                type = LineType.Straight,
-                strokeWidth = 2.dp,
-            )
-
-            lines = listOf(line1, line2)
+//            val dataPoints = randomizePoints(xAxis = xAxis, yAxis = yAxis)
+//
+//            val line1 = Line(
+//                id = "line1",
+//                plottedPoints = dataPoints,
+//                color = Color.Red,
+//                fillColorAlpha = 0.8f,
+//                type = LineType.Curved,
+//                strokeWidth = 2.dp,
+//            )
+//
+//            val line2 = Line(
+//                id = "line2",
+//                plottedPoints = dataPoints,
+//                color = Color.Blue,
+//                type = LineType.Straight,
+//                strokeWidth = 2.dp,
+//            )
+//
+//            lines = listOf(line1, line2)
         }
     }
 
@@ -178,6 +188,8 @@ private fun LineChartPreview() {
                 Button(text = "1 year") { periodType = PeriodType.ONE_YEAR }
             }
 
+            Button(text = "Add new line") { onAddNewLine() }
+
             Button(text = "Randomize data points") { onRandomizeChart() }
 
             safeLet(xAxis, yAxis) { xAxis, yAxis ->
@@ -209,4 +221,24 @@ private fun LineChartPreview() {
             }
         }
     }
+
+    LaunchedEffect(Unit) {
+        onAddNewLine()
+    }
+}
+
+private fun randomizePoints(xAxis: Axis, yAxis: Axis): List<PlottedPoint> {
+    val dataPoints = mutableListOf<PlottedPoint>()
+
+    val lowestYValue = yAxis.values.minByOrNull { it.value }!!.value
+    val highestYValue = yAxis.values.maxByOrNull { it.value }!!.value
+
+    xAxis.values.forEach { xValue ->
+        val x = xValue.value
+        val y = Random.nextDouble(lowestYValue, highestYValue)
+
+        dataPoints.add(PlottedPoint(id = "#$xValue", values = PointValues(x = x, y = y)))
+    }
+
+    return dataPoints
 }
