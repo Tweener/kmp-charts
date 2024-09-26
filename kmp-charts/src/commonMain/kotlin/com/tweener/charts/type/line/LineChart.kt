@@ -1,14 +1,20 @@
 package com.tweener.charts.type.line
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
@@ -35,8 +41,17 @@ fun LineChart(
     gridVisibility: GridVisibility = LineChartDefaults.gridVisibility(),
     colors: LineChartColors = LineChartDefaults.chartColors(),
     sizes: LineChartSizes = LineChartDefaults.chartSizes(),
+    animated: Boolean = true,
+    animationDurationMillis: Int = 800,
 ) {
     val textMeasurer = rememberTextMeasurer()
+    val initialDrawingAnimRatio = if (LocalInspectionMode.current) 1f else 0f // Don't animate when in Preview mode
+    val ratioAnimatable: Animatable<Float, AnimationVector1D> = remember { Animatable(initialValue = initialDrawingAnimRatio) } // Ratio of a segment to be drawn when animating segments
+
+    LaunchedEffect(lines) {
+        ratioAnimatable.animateTo(targetValue = 0f, animationSpec = tween(durationMillis = 0))
+        ratioAnimatable.animateTo(targetValue = 1f, animationSpec = tween(durationMillis = if (animated) animationDurationMillis else 0))
+    }
 
     Canvas(
         modifier = modifier
@@ -72,7 +87,7 @@ fun LineChart(
             gridVisibility = gridVisibility,
         )
 
-        drawLines(lines = lines, gridOffsets = gridOffsets, xAxis = xAxis, yAxis = yAxis)
+        drawLines(lines = lines, gridOffsets = gridOffsets, xAxis = xAxis, yAxis = yAxis, ratioAnimatable = ratioAnimatable)
     }
 }
 
