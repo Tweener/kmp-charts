@@ -93,6 +93,7 @@ fun LineChart(
 
 object LineChartDefaults {
 
+    val LineGradientFillAlpha = 0.3f
     val LineStrokeWidth = 2.dp
 
     fun gridVisibility(

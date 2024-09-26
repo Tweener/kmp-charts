@@ -64,17 +64,24 @@ private fun LineChartPreview() {
                 dataPoints.add(PlottedPoint(id = "#$xValue", values = PointValues(x = x, y = y)))
             }
 
-            dataPoints.forEach { println("Data point: $it") }
-
             val line1 = Line(
                 id = "line1",
                 plottedPoints = dataPoints,
                 color = Color.Red,
+                fillColorAlpha = 0.8f,
+                type = LineType.Curved,
+                strokeWidth = 2.dp,
+            )
+
+            val line2 = Line(
+                id = "line2",
+                plottedPoints = dataPoints,
+                color = Color.Blue,
                 type = LineType.Straight,
                 strokeWidth = 2.dp,
             )
 
-            lines = listOf(line1)
+            lines = listOf(line1, line2)
         }
     }
 
@@ -170,6 +177,8 @@ private fun LineChartPreview() {
                 Button(text = "6 months") { periodType = PeriodType.SIX_MONTHS }
                 Button(text = "1 year") { periodType = PeriodType.ONE_YEAR }
             }
+
+            Button(text = "Randomize data points") { onRandomizeChart() }
 
             safeLet(xAxis, yAxis) { xAxis, yAxis ->
                 LineChart(

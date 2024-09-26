@@ -18,6 +18,7 @@ data class Line(
     val id: String,
     val plottedPoints: List<PlottedPoint>,
     val color: Color,
+    val fillColorAlpha: Float = LineChartDefaults.LineGradientFillAlpha,
     val type: LineType = DefaultType,
     val strokeWidth: Dp = LineChartDefaults.LineStrokeWidth,
     val strokeCap: StrokeCap = DefaultCap,
