@@ -64,10 +64,10 @@ fun LineChart(
         val yAxisValueWidth = yAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
         val yAxisValueHeight = yAxis.computeValueMaxHeight(textMeasurer = textMeasurer, textStyle = textStyle)
 
-        val startOffset = yAxisValueWidth + sizes.axisValuesPadding().toPx()
+        val startOffset = yAxisValueWidth + sizes.axisYValuesPadding().toPx()
         val endOffset = size.width - xAxisValueWidth / 2
         val topOffset = yAxisValueHeight / 2
-        val bottomOffset = size.height - xAxisValueHeight - sizes.axisValuesPadding().toPx()
+        val bottomOffset = size.height - xAxisValueHeight - sizes.axisXValuesPadding().toPx()
 
         val gridOffsets = GridOffsets(
             topStartCorner = Offset(startOffset, topOffset),
@@ -112,12 +112,14 @@ object LineChartDefaults {
         axisStrokeWidth: Dp = ChartDefaults.ChartSizes.AxisStrokeWidth,
         axisDashOn: Dp = ChartDefaults.ChartSizes.AxisDashOn,
         axisDashOff: Dp = ChartDefaults.ChartSizes.AxisDashOff,
-        axisValuesPadding: Dp = ChartDefaults.ChartSizes.AxisValuesPadding,
+        axisXValuesPadding: Dp = ChartDefaults.ChartSizes.AxisXValuesPadding,
+        axisYValuesPadding: Dp = ChartDefaults.ChartSizes.AxisYValuesPadding,
     ): LineChartSizes = LineChartSizes(
         axisStrokeWidth = axisStrokeWidth,
         axisDashOn = axisDashOn,
         axisDashOff = axisDashOff,
-        axisValuesPadding = axisValuesPadding,
+        axisXValuesPadding = axisXValuesPadding,
+        axisYValuesPadding = axisYValuesPadding,
     )
 
     @Composable
@@ -139,8 +141,9 @@ class LineChartSizes internal constructor(
     axisStrokeWidth: Dp,
     axisDashOn: Dp,
     axisDashOff: Dp,
-    axisValuesPadding: Dp,
-) : ChartSizes(axisStrokeWidth = axisStrokeWidth, axisDashOn = axisDashOn, axisDashOff = axisDashOff, axisValuesPadding = axisValuesPadding)
+    axisXValuesPadding: Dp,
+    axisYValuesPadding: Dp,
+) : ChartSizes(axisStrokeWidth = axisStrokeWidth, axisDashOn = axisDashOn, axisDashOff = axisDashOff, axisXValuesPadding = axisXValuesPadding, axisYValuesPadding = axisYValuesPadding)
 
 @Immutable
 class LineChartColors internal constructor(

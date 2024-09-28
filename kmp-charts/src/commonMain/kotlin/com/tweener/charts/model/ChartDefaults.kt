@@ -24,7 +24,8 @@ object ChartDefaults {
         val AxisStrokeWidth = 4.dp
         val AxisDashOn = 10.dp
         val AxisDashOff = 10.dp
-        val AxisValuesPadding = Size.Padding.Tiny
+        val AxisXValuesPadding = Size.Padding.ExtraSmall
+        val AxisYValuesPadding = Size.Padding.ExtraSmall
     }
 
     object ChartColors {

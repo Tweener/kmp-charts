@@ -215,7 +215,8 @@ private fun LineChartPreview() {
                         axisStrokeWidth = 1.dp,
                         axisDashOn = 8.dp,
                         axisDashOff = 8.dp,
-                        axisValuesPadding = Size.Padding.Small,
+                        axisXValuesPadding = Size.Padding.Small,
+                        axisYValuesPadding = Size.Padding.ExtraSmall,
                     )
                 )
             }

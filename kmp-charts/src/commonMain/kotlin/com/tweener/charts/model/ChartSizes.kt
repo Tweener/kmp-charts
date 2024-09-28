@@ -12,7 +12,8 @@ open class ChartSizes internal constructor(
     private val axisStrokeWidth: Dp,
     private val axisDashOn: Dp,
     private val axisDashOff: Dp,
-    private val axisValuesPadding: Dp,
+    private val axisXValuesPadding: Dp,
+    private val axisYValuesPadding: Dp,
 ) {
     internal fun axisStrokeWidth(): Dp = axisStrokeWidth
 
@@ -20,5 +21,7 @@ open class ChartSizes internal constructor(
 
     internal fun axisDashOff(): Dp = axisDashOff
 
-    internal fun axisValuesPadding(): Dp = axisValuesPadding
+    internal fun axisXValuesPadding(): Dp = axisXValuesPadding
+
+    internal fun axisYValuesPadding(): Dp = axisYValuesPadding
 }

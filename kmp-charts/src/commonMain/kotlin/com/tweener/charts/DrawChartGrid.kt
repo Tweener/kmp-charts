@@ -100,7 +100,7 @@ private fun DrawScope.drawXGrid(
             }
         }
 
-        // Draw value on X axis
+        // Draw values on X axis
         startXValueOffset -= valueWidth / 2
 
         drawText(
@@ -111,7 +111,7 @@ private fun DrawScope.drawXGrid(
             overflow = TextOverflow.Ellipsis,
             topLeft = Offset(
                 x = startXValueOffset.coerceAtMost(size.width),
-                y = gridOffsets.bottomStartCorner.y + sizes.axisValuesPadding().toPx(),
+                y = gridOffsets.bottomStartCorner.y + sizes.axisXValuesPadding().toPx(),
             )
         )
 
@@ -162,7 +162,7 @@ private fun DrawScope.drawYGrid(
             }
         }
 
-        // Draw value on Y axis
+        // Draw values on Y axis
         drawText(
             textMeasurer = textMeasurer,
             text = yValue.name,
