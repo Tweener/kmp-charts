@@ -100,8 +100,11 @@ private fun DrawScope.drawXGrid(
             }
         }
 
-        // Draw values on X axis
-        startXValueOffset -= valueWidth / 2
+        // Draw values on X axis (for the first and last value, make them fit inside the axis)
+        when {
+            index == xAxis.values.size - 1 -> startXValueOffset -= valueWidth
+            index > 0 -> startXValueOffset -= valueWidth / 2
+        }
 
         drawText(
             textMeasurer = textMeasurer,
@@ -115,7 +118,12 @@ private fun DrawScope.drawXGrid(
             )
         )
 
-        startXValueOffset += gapBetweenValues + valueWidth / 2
+        when {
+            index == xAxis.values.size - 1 -> startXValueOffset += valueWidth
+            index > 0 -> startXValueOffset += valueWidth / 2
+        }
+
+        startXValueOffset += gapBetweenValues
     }
 }
 

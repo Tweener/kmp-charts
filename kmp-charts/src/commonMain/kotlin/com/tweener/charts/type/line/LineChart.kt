@@ -59,13 +59,12 @@ fun LineChart(
             .clipToBounds(),
     ) {
         // Compute grid offsets (4 corners)
-        val xAxisValueWidth = xAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
         val xAxisValueHeight = xAxis.computeValueMaxHeight(textMeasurer, textStyle = textStyle)
         val yAxisValueWidth = yAxis.computeValueMaxWidth(textMeasurer, textStyle = textStyle)
         val yAxisValueHeight = yAxis.computeValueMaxHeight(textMeasurer = textMeasurer, textStyle = textStyle)
 
         val startOffset = yAxisValueWidth + sizes.axisYValuesPadding().toPx()
-        val endOffset = size.width - xAxisValueWidth / 2
+        val endOffset = size.width
         val topOffset = yAxisValueHeight / 2
         val bottomOffset = size.height - xAxisValueHeight - sizes.axisXValuesPadding().toPx()
 
