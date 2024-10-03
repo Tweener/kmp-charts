@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -63,21 +64,24 @@ fun DonutChart(
     val density = LocalDensity.current
     val initialSegmentDrawingAnimRatio = if (LocalInspectionMode.current) 1f else 0f // Don't animate when in Preview mode
 
+    var chartSegments by remember { mutableStateOf(segments) }
     val segmentsStartAngles = remember { mutableStateListOf<Degrees>() } // List of all segments starting angles
     val segmentsEndAngles = remember { mutableStateListOf<Degrees>() } // List of all segments ending angles
     val segmentDrawingAnimRatio = remember { Animatable(initialValue = initialSegmentDrawingAnimRatio) } // Ratio of a segment to be drawn when animating segments
-    var clickedSegmentIndex by remember { mutableIntStateOf(segments.indexOfFirst { it.selected }) } // Clicked segment in chart
+    var clickedSegmentIndex by remember { mutableIntStateOf(chartSegments.indexOfFirst { it.selected }) } // Clicked segment in chart
 
     LaunchedEffect(segments) {
+        chartSegments = segments
+
         // Select a segment if requested, otherwise no segment selected
-        clickedSegmentIndex = segments.indexOfFirst { it.selected }
+        clickedSegmentIndex = chartSegments.indexOfFirst { it.selected }
 
         // Compute each segment's starting and ending angles on the circle
         segmentsStartAngles.clear()
         segmentsEndAngles.clear()
 
         var currentAngle = sizes.angleBetweenSegments() / 2
-        segments.forEach { segment ->
+        chartSegments.forEach { segment ->
             segmentsStartAngles.add(currentAngle)
             currentAngle += segment.angle // Move clockwise
             segmentsEndAngles.add(currentAngle - sizes.angleBetweenSegments())
@@ -99,7 +103,7 @@ fun DonutChart(
                 modifier = Modifier
                     .size(canvasSizeDp)
                     .padding(Size.Padding.Default)
-                    .pointerInput(segments) {
+                    .pointerInput(chartSegments) {
                         detectTapGestures { offset ->
                             val clickedAngle = computeAngleFromPointerInput(
                                 width = canvasSize.toFloat(),
@@ -112,14 +116,14 @@ fun DonutChart(
                             segmentsEndAngles.forEachIndexed { index, angle ->
                                 if (clickedAngle <= angle) {
                                     // Only detect click if the segment is enabled
-                                    if (segments[index].enabled) {
+                                    if (chartSegments[index].enabled) {
                                         // Disable the current segment if the user clicked on the same one
                                         clickedSegmentIndex = when {
                                             clickedSegmentIndex == index -> NO_SELECTED_SEGMENT
                                             else -> index
                                         }
 
-                                        onSegmentClicked?.invoke(segments[index], clickedSegmentIndex != NO_SELECTED_SEGMENT)
+                                        onSegmentClicked?.invoke(chartSegments[index], clickedSegmentIndex != NO_SELECTED_SEGMENT)
                                     }
 
                                     return@detectTapGestures
@@ -128,7 +132,7 @@ fun DonutChart(
                         }
                     }
             ) {
-                segments.forEachIndexed { index, segment ->
+                chartSegments.forEachIndexed { index, segment ->
                     val isSelected = clickedSegmentIndex == index
 
                     drawSegment(
