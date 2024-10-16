@@ -1,6 +1,6 @@
-<h1 style="text-align: center;">Charts library for Compose Multiplatform</h1>
+<h1>Charts library for Compose Multiplatform</h1>
 
-[![](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fs01.oss.sonatype.org%2Fservice%2Flocal%2Frepo_groups%2Fpublic%2Fcontent%2Fio%2Fgithub%2Ftweener%2Fkmp-charts%2Fmaven-metadata.xml)](https://central.sonatype.com/artifact/io.github.tweener/kmp-charts)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.tweener/kmp-charts?color=orange)](https://central.sonatype.com/artifact/io.github.tweener/kmp-charts)
 [![Kotlin](https://img.shields.io/badge/kotlin-2.0.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/compose-1.7.0-blue.svg?logo=jetpackcompose)](https://www.jetbrains.com/lp/compose-multiplatform)
 ![gradle-version](https://img.shields.io/badge/gradle-8.5.2-blue?logo=gradle)
