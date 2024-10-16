@@ -51,7 +51,7 @@ private fun LineChartPreview() {
     var yAxis by remember { mutableStateOf<Axis?>(null) }
 
     val onAddNewLine: () -> Unit = {
-        com.tweener.common._internal.kotlinextensions.safeLet(xAxis, yAxis) { xAxis, yAxis ->
+        com.tweener.common._internal.safeLet(xAxis, yAxis) { xAxis, yAxis ->
             val dataPoints = randomizePoints(xAxis = xAxis, yAxis = yAxis)
 
             val line = Line(
@@ -68,7 +68,7 @@ private fun LineChartPreview() {
     }
 
     val onRandomizeChart: () -> Unit = {
-        com.tweener.common._internal.kotlinextensions.safeLet(xAxis, yAxis) { xAxis, yAxis ->
+        com.tweener.common._internal.safeLet(xAxis, yAxis) { xAxis, yAxis ->
             lines = lines.map { line ->
                 line.copy(plottedPoints = randomizePoints(xAxis = xAxis, yAxis = yAxis))
             }
