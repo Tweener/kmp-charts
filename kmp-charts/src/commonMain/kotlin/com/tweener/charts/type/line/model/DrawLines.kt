@@ -102,15 +102,9 @@ private fun DrawScope.drawCurvedLine(
     var previousPoint: Offset? = null
 
     points.forEachIndexed { index, point ->
-        previousPoint?.let {
-            buildCurveLine(path, it, point)
-        }
-
+        previousPoint?.let { buildCurveLine(path = path, startPoint = it, endPoint = point, useQuadratic = points.size <= 2) }
         previousPoint = point
-
-        if (index == 0) {
-            path.moveTo(point.x, point.y)
-        }
+        if (index == 0) path.moveTo(point.x, point.y)
     }
 
     // Draw curved line
@@ -127,23 +121,36 @@ private fun DrawScope.drawCurvedLine(
     return path
 }
 
-private fun buildCurveLine(path: Path, startPoint: Offset, endPoint: Offset) {
+private fun buildCurveLine(path: Path, startPoint: Offset, endPoint: Offset, useQuadratic: Boolean = false) {
     val firstControlPoint = Offset(
-        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
+        x = startPoint.x + (endPoint.x - startPoint.x) / 2,
         y = startPoint.y,
     )
 
-    val secondControlPoint = Offset(
-        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-        y = endPoint.y,
-    )
+    when (useQuadratic) {
+        true -> {
+            path.quadraticTo(
+                x1 = firstControlPoint.x,
+                y1 = firstControlPoint.y,
+                x2 = endPoint.x,
+                y2 = endPoint.y,
+            )
+        }
 
-    path.cubicTo(
-        x1 = firstControlPoint.x,
-        y1 = firstControlPoint.y,
-        x2 = secondControlPoint.x,
-        y2 = secondControlPoint.y,
-        x3 = endPoint.x,
-        y3 = endPoint.y,
-    )
+        false -> {
+            val secondControlPoint = Offset(
+                x = startPoint.x + (endPoint.x - startPoint.x) / 2,
+                y = endPoint.y,
+            )
+
+            path.cubicTo(
+                x1 = firstControlPoint.x,
+                y1 = firstControlPoint.y,
+                x2 = secondControlPoint.x,
+                y2 = secondControlPoint.y,
+                x3 = endPoint.x,
+                y3 = endPoint.y,
+            )
+        }
+    }
 }
