@@ -9,6 +9,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.tweener.charts._internal.kotlinextension.computeValueMaxHeight
 import com.tweener.charts._internal.kotlinextension.computeValueWidth
 import com.tweener.charts.model.Axis
@@ -193,8 +194,8 @@ private fun DrawScope.drawAxisLine(
     end: Offset,
     strokeWidth: Dp,
     strokeStyle: StrokeStyle,
-    dashOn: Dp,
-    dashOff: Dp,
+    dashOn: Dp = 0.dp,
+    dashOff: Dp = 0.dp,
 ) {
     val pathEffect = if (strokeStyle == StrokeStyle.Dashed) {
         PathEffect.dashPathEffect(

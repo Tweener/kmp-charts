@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import com.tweener.charts.model.Axis
 import com.tweener.charts.model.GridOffsets
+import com.tweener.common._internal.kotlinextensions.safeDiv
 
 internal fun DrawScope.drawLines(
     lines: List<Line>,
@@ -31,18 +32,7 @@ internal fun DrawScope.drawLines(
 
     lines.forEach { line ->
         // Compute points coordinates
-        val points = line.plottedPoints.map { point ->
-            val percentX = (point.values.x - minXValue) * 100 / (maxXValue - minXValue)
-            val pointXOffset = percentX * (gridOffsets.bottomEndCorner.x - gridOffsets.bottomStartCorner.x) / 100
-
-            val percentY = (point.values.y - minYValue) * 100 / (maxYValue - minYValue)
-            val pointYOffset = percentY * (gridOffsets.bottomStartCorner.y - gridOffsets.topStartCorner.y) / 100
-
-            Offset(
-                x = pointXOffset.toFloat() + gridOffsets.topStartCorner.x,
-                y = gridOffsets.bottomStartCorner.y - pointYOffset.toFloat() * ratioAnimatable.value,
-            )
-        }
+        val points = line.plottedPoints.map { point -> computePlottedPointOffset(point, minXValue, maxXValue, minYValue, maxYValue, gridOffsets, ratioAnimatable) }
 
         // Draw line
         val path = when (line.type) {
@@ -58,7 +48,6 @@ internal fun DrawScope.drawLines(
                 brush = Brush.verticalGradient(listOf(line.color.copy(alpha = line.fillColorAlpha), Color.Transparent)),
                 style = Fill,
             )
-
         }
     }
 }
@@ -102,9 +91,15 @@ private fun DrawScope.drawCurvedLine(
     var previousPoint: Offset? = null
 
     points.forEachIndexed { index, point ->
-        previousPoint?.let { buildCurveLine(path = path, startPoint = it, endPoint = point, useQuadratic = points.size <= 2) }
-        previousPoint = point
+        // Start path from first point coordinates
         if (index == 0) path.moveTo(point.x, point.y)
+
+        previousPoint?.let {
+            // Build a curved line between the previous point and this one
+            buildCurveLine(path = path, startPoint = it, endPoint = point, useQuadratic = points.size <= 2)
+        }
+
+        previousPoint = point
     }
 
     // Draw curved line
@@ -153,4 +148,31 @@ private fun buildCurveLine(path: Path, startPoint: Offset, endPoint: Offset, use
             )
         }
     }
+}
+
+/**
+ * Translate the given [PlottedPoint] values to the canvas coordinates.
+ */
+private fun computePlottedPointOffset(
+    point: PlottedPoint,
+    minXValue: Double,
+    maxXValue: Double,
+    minYValue: Double,
+    maxYValue: Double,
+    gridOffsets: GridOffsets,
+    ratioAnimatable: Animatable<Float, AnimationVector1D>,
+): Offset {
+    // Calculate the percentage X position
+    val percentX = ((point.values.x - minXValue) * 100).safeDiv(maxXValue - minXValue)
+    val pointXOffset = percentX * (gridOffsets.bottomEndCorner.x - gridOffsets.bottomStartCorner.x) / 100
+
+    // Calculate the percentage Y position
+    val percentY = ((point.values.y - minYValue) * 100).safeDiv(maxYValue - minYValue)
+    val pointYOffset = percentY * (gridOffsets.bottomStartCorner.y - gridOffsets.topStartCorner.y) / 100
+
+    // Return the computed Offset for drawing on the canvas
+    return Offset(
+        x = pointXOffset.toFloat() + gridOffsets.topStartCorner.x,
+        y = gridOffsets.bottomStartCorner.y - pointYOffset.toFloat() * ratioAnimatable.value,
+    )
 }

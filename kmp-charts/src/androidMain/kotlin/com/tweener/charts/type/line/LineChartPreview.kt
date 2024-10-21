@@ -72,26 +72,6 @@ private fun LineChartPreview() {
             lines = lines.map { line ->
                 line.copy(plottedPoints = randomizePoints(xAxis = xAxis, yAxis = yAxis))
             }
-//            val dataPoints = randomizePoints(xAxis = xAxis, yAxis = yAxis)
-//
-//            val line1 = Line(
-//                id = "line1",
-//                plottedPoints = dataPoints,
-//                color = Color.Red,
-//                fillColorAlpha = 0.8f,
-//                type = LineType.Curved,
-//                strokeWidth = 2.dp,
-//            )
-//
-//            val line2 = Line(
-//                id = "line2",
-//                plottedPoints = dataPoints,
-//                color = Color.Blue,
-//                type = LineType.Straight,
-//                strokeWidth = 2.dp,
-//            )
-//
-//            lines = listOf(line1, line2)
         }
     }
 
