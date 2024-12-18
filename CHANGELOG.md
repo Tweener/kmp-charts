@@ -12,10 +12,13 @@
 - `LineChart`: Ensure first and last values on the X axis are within the axis bounds
 
 ## [1.2.0] - September 27, 2024
+- Updated project configuration to use Gradle version catalog.
 - **`[BREAKING]`** `DonutChart` has been moved to a new package: com.tweener.charts.type.donut.
 - **`[BREAKING]`** `Segment` class has been moved to a new package: com.tweener.charts.type.donut.model.
 - New chart added: `LineChart` to display plotted points connected with a straight or curved line.
 - Fixes a bug where `DonutChart`'s segments were not properly updated
+- `DonutChart`'s segments now have a selected property which allows pre-selection of a segment during composition.
+- Added a new property to `DonutChart` to allow customization of the StrokeCap.
 
 ## [1.1.0] - May 28, 2024
 - **kmp-charts** now official support Kotlin 2.0! 🎉
