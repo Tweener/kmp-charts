@@ -31,9 +31,9 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tweener.charts.type.donut.model.Segment
-import com.tweener.common._internal.kotlinextensions.degrees
-import com.tweener.common._internal.kotlinextensions.radians
-import com.tweener.common._internal.utils.Degrees
+import com.tweener.kmpkit.kotlinextensions.degrees
+import com.tweener.kmpkit.kotlinextensions.radians
+import com.tweener.kmpkit.utils.Degrees
 import com.tweener.czan.theme.Size
 import kotlin.math.atan2
 import kotlin.math.min

@@ -2,7 +2,7 @@ package com.tweener.charts.type.donut.model
 
 import androidx.annotation.FloatRange
 import androidx.compose.ui.graphics.Color
-import com.tweener.common._internal.utils.Degrees
+import com.tweener.kmpkit.utils.Degrees
 
 /**
  * @author Vivien Mahe

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import com.tweener.charts.type.donut.model.Segment
-import com.tweener.common._internal.kotlinextensions.degrees
+import com.tweener.kmpkit.kotlinextensions.degrees
 import com.tweener.czan.preview.CzanThemePreview
 import com.tweener.czan.preview.UiModePreviews
 import io.github.aakira.napier.Napier

@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import com.tweener.charts.model.Axis
 import com.tweener.charts.model.GridOffsets
-import com.tweener.common._internal.kotlinextensions.safeDiv
+import com.tweener.kmpkit.kotlinextensions.safeDiv
 
 internal fun DrawScope.drawLines(
     lines: List<Line>,
