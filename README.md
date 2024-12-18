@@ -127,8 +127,7 @@ LineChart(
 ```
 Some examples of output with straight or curved lines:
 
-![Screenshot 2024-12-18 at 09 17 14](https://github.com/user-attachments/assets/3370e044-450a-4f5c-966e-001213904535)
-![Screenshot 2024-12-18 at 09 17 55](https://github.com/user-attachments/assets/66cd4a05-42a1-4805-8836-aedc446ef74e)
+![linechart](https://github.com/user-attachments/assets/060464f5-ff2e-4e05-881f-a6e3ce52740d)
 
 ---
 
